@@ -1,0 +1,171 @@
+.smartButton {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  gap: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.iconSpacing {
+  margin-right: 0.5rem;
+}
+
+.smartButton:hover {
+  filter: brightness(90%);
+}
+
+.smartButton:active {
+  filter: brightness(85%);
+  transform: scale(0.98);
+}
+
+.smartButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Primary button */
+
+.btnPrimary {
+  background-color: #70d44b;
+  color: white;
+  border-color: #5fb738;
+}
+
+.btnPrimary:hover {
+  background-color: #5fb738;
+  border-color: #4e9930;
+}
+
+.btnPrimary:active {
+  background-color: #4e9930;
+  border-color: #3d7a28;
+}
+
+.btnPrimary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(112, 212, 75, 0.5);
+}
+
+/* Secondary button (cinza) */
+
+.btnSecondary {
+  background-color: #575756;
+  color: white;
+  border-color: #4a4a49;
+}
+
+.btnSecondary:hover {
+  background-color: #4a4a49;
+  border-color: #3e3e3d;
+}
+
+.btnSecondary:active {
+  background-color: #3e3e3d;
+  border-color: #333332;
+}
+
+.btnSecondary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(87, 87, 86, 0.5);
+}
+
+
+.btnInfo {
+  background-color: #3490dc;
+  color: white;
+  border-color: #2779bd;
+}
+
+.btnInfo:hover {
+  background-color: #2779bd;
+  border-color: #1c6db1;
+}
+
+.btnInfo:active {
+  background-color: #1c6db1;
+  border-color: #115fa3;
+}
+
+.btnInfo:focus {
+  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.5);
+}
+
+
+.btnWarning {
+  background-color: #ffed4a;
+  color: black;
+  border-color: #fcd92e;
+}
+
+.btnWarning:hover {
+  background-color: #fcd92e;
+  border-color: #fabd0d;
+}
+
+.btnWarning:active {
+  background-color: #fabd0d;
+  border-color: #f7b500;
+}
+
+.btnWarning:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 237, 74, 0.5);
+}
+
+
+.btnDanger {
+  background-color: #e3342f;
+  color: white;
+  border-color: #d0211c;
+}
+
+.btnDanger:hover {
+  background-color: #d0211c;
+  border-color: #b81812;
+}
+
+.btnDanger:active {
+  background-color: #b81812;
+  border-color: #a1110d;
+}
+
+.btnDanger:focus {
+  box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.5);
+}
+
+/* Alert button (laranja) */
+
+.btnAlert {
+  background-color: #f6993f;
+  color: white;
+  border-color: #f5821f;
+}
+
+.btnAlert:hover {
+  background-color: #f5821f;
+  border-color: #f36c00;
+}
+
+.btnAlert:active {
+  background-color: #f36c00;
+  border-color: #e65a00;
+}
+
+.btnAlert:focus {
+  box-shadow: 0 0 0 0.2rem rgba(246, 153, 63, 0.5);
+}
+
+
+.btnSmall {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+}
+
+.btnLarge {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+  border-radius: 0.3rem;
+}
+

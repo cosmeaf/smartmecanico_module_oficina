@@ -1,0 +1,51 @@
+/* src/styles/tableStyles.css */
+
+.body-table {
+  background-color: #ffffff;
+  min-height: 80vh;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+  padding: 2rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  overflow: auto; 
+}
+
+.smart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.smart-table thead tr {
+  background-color: #a9a9a9;
+  color: #ffffff;
+  text-align: left;
+}
+
+.smart-table th,
+.smart-table td {
+  padding: 8px 10px;
+  border: 1px solid #dddddd;
+}
+
+.smart-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.smart-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.smart-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.smart-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
