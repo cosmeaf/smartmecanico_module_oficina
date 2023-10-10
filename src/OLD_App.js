@@ -16,12 +16,6 @@ import Home from "./pages/public/Home";
 import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
 import Recovery from "./pages/public/Recovery";
-import About from "./pages/public/About";
-
-const ProtectedRoute = () => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />;
-};
 
 const App = () => {
   const { loading, isAuthenticated } = useAuth();
@@ -65,11 +59,14 @@ const App = () => {
             )
           }
         />
-
-        <Route path="/dashboard" element={<ProtectedRoute />}>
+        <Route
+          path="/dashboard"
+          element={
+            isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />
+          }
+        >
           <Route index element={<Admin />} />
           <Route path="user" element={<User />} />
-          <Route path="user-register" element={<UserRegister />} />
           <Route path="address" element={<Address />} />
           <Route path="vehicle" element={<Vehicle />} />
           <Route path="vehicle-add" element={<VehicleAdd />} />

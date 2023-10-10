@@ -1,10 +1,9 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../../context/AuthContext";
 import { ReactComponent as Logo } from "../../image/logo.svg";
-import { showMessage } from "../../components/Notification";
 
 const validationSchema = yup.object({
   email: yup.string().email("Invalid email format").required("Required"),
@@ -14,31 +13,16 @@ const validationSchema = yup.object({
     .required("Required"),
 });
 
-const Login = () => {
-  const { signIn } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
-
+const Recovery = () => {
+  const { login } = useAuth();
   const formik = useFormik({
     initialValues: {
-      email: "cosme.alex@gmail.com",
-      password: "qweasd32",
+      email: "",
+      password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      const status = await signIn(values.email, values.password);
-      if (status) {
-        navigate("/dashboard", { replace: true, state: { from: location } });
-        showMessage({
-          status: "success",
-          message: "Login bem-sucedido!",
-        });
-      } else {
-        showMessage({
-          status: "error",
-          message: "Falha no login. Tente novamente.",
-        });
-      }
+    onSubmit: (values) => {
+      login(values.email, values.password);
     },
   });
 
@@ -62,30 +46,16 @@ const Login = () => {
             ) : null}
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Password</label>
-            <input
-              className="w-full p-2 border rounded"
-              type="password"
-              {...formik.getFieldProps("password")}
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <div className="text-red-500 mt-2 text-sm">
-                {formik.errors.password}
-              </div>
-            ) : null}
-          </div>
-
           <button
             type="submit"
             className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600"
           >
-            Sign In
+            Send
           </button>
         </form>
         <div className="flex justify-between mt-4">
-          <Link to="/recovery" className="text-green-500 hover:underline">
-            Forgot Password?
+          <Link to="/login" className="text-green-500 hover:underline">
+            Sign In
           </Link>
           <Link to="/register" className="text-green-500 hover:underline">
             Sign Up
@@ -96,4 +66,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Recovery;

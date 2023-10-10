@@ -1,10 +1,9 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../../context/AuthContext";
 import { ReactComponent as Logo } from "../../image/logo.svg";
-import { showMessage } from "../../components/Notification";
 
 const validationSchema = yup.object({
   email: yup.string().email("Invalid email format").required("Required"),
@@ -12,33 +11,23 @@ const validationSchema = yup.object({
     .string()
     .min(8, "Password should be of minimum 8 characters length")
     .required("Required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), undefined], "Passwords must match!")
+    .required("Required"),
 });
 
-const Login = () => {
-  const { signIn } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
-
+const Register = () => {
+  const { login } = useAuth();
   const formik = useFormik({
     initialValues: {
-      email: "cosme.alex@gmail.com",
-      password: "qweasd32",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      const status = await signIn(values.email, values.password);
-      if (status) {
-        navigate("/dashboard", { replace: true, state: { from: location } });
-        showMessage({
-          status: "success",
-          message: "Login bem-sucedido!",
-        });
-      } else {
-        showMessage({
-          status: "error",
-          message: "Falha no login. Tente novamente.",
-        });
-      }
+    onSubmit: (values) => {
+      login(values.email, values.password);
     },
   });
 
@@ -75,20 +64,34 @@ const Login = () => {
               </div>
             ) : null}
           </div>
-
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">
+              Confirm Password
+            </label>
+            <input
+              className="w-full p-2 border rounded"
+              type="password"
+              {...formik.getFieldProps("confirmPassword")}
+            />
+            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+              <div className="text-red-500 mt-2 text-sm">
+                {formik.errors.confirmPassword}
+              </div>
+            ) : null}
+          </div>
           <button
             type="submit"
             className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600"
           >
-            Sign In
+            Sign Up
           </button>
         </form>
         <div className="flex justify-between mt-4">
           <Link to="/recovery" className="text-green-500 hover:underline">
             Forgot Password?
           </Link>
-          <Link to="/register" className="text-green-500 hover:underline">
-            Sign Up
+          <Link to="/login" className="text-green-500 hover:underline">
+            Sign In
           </Link>
         </div>
       </div>
@@ -96,4 +99,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
