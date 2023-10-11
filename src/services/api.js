@@ -90,7 +90,7 @@ const api = {
       if (response.ok) {
         return { status: true, data };
       } else {
-        throw new Error(data.message || "Erro no tokenVerify");
+        return { status: false, data };
       }
     } catch (error) {
       return { status: false, message: error.message };
