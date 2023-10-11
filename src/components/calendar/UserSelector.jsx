@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import api from "../services/api";
+import api from "../../services/api";
 
 const UserSelector = ({ onUserChange }) => {
   const [users, setUsers] = useState([]);

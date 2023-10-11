@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Calendar from "../../components/calendar/Calendar";
-import UserSelector from "../../components/UserSelector";
+import UserSelector from "../../components/calendar/UserSelector";
 
 const Appointment = () => {
   const [selectedUser, setSelectedUser] = useState(null);
