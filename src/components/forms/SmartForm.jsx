@@ -6,22 +6,21 @@ const FormContext = createContext();
 const SmartForm = ({ children, onSubmit }) => {
   const [errors, setErrors] = useState({});
 
-  const validateInput = (name, value, allValues) => {
-    switch (name) {
-      case "username":
+  const validateInput = (type, value, allValues) => {
+    switch (type) {
       case "text":
         if (!value || !value.trim()) {
-          setErrors((prev) => ({ ...prev, [name]: "Field cannot be empty." }));
+          setErrors((prev) => ({ ...prev, type: "Field cannot be empty." }));
         } else {
-          setErrors((prev) => ({ ...prev, [name]: null }));
+          setErrors((prev) => ({ ...prev, type: null }));
         }
         break;
 
       case "email":
         if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value)) {
-          setErrors((prev) => ({ ...prev, [name]: "Invalid email." }));
+          setErrors((prev) => ({ ...prev, type: "Invalid email." }));
         } else {
-          setErrors((prev) => ({ ...prev, [name]: null }));
+          setErrors((prev) => ({ ...prev, type: null }));
         }
         break;
 
@@ -29,23 +28,47 @@ const SmartForm = ({ children, onSubmit }) => {
         if (value.length < 8) {
           setErrors((prev) => ({
             ...prev,
-            [name]: "Password must be at least 8 characters.",
+            type: "Password must be at least 8 characters.",
           }));
         } else {
-          setErrors((prev) => ({ ...prev, [name]: null }));
+          setErrors((prev) => ({ ...prev, type: null }));
         }
         break;
 
       case "passconf":
         if (value !== allValues.password) {
-          setErrors((prev) => ({ ...prev, [name]: "Passwords do not match." }));
+          setErrors((prev) => ({ ...prev, type: "Passwords do not match." }));
         } else {
-          setErrors((prev) => ({ ...prev, [name]: null }));
+          setErrors((prev) => ({ ...prev, type: null }));
+        }
+        break;
+
+      case "phone": {
+        const phoneRegex = /^\+55 \(\d{2}\) 9\d{4}-\d{4}$/;
+        if (!phoneRegex.test(value)) {
+          setErrors((prev) => ({
+            ...prev,
+            [type]: "Número de telefone inválido.",
+          }));
+        } else {
+          setErrors((prev) => ({ ...prev, [type]: null }));
+        }
+        break;
+      }
+
+      case "number":
+        if (isNaN(value)) {
+          setErrors((prev) => ({
+            ...prev,
+            type: "Por favor, insira um número válido.",
+          }));
+        } else {
+          setErrors((prev) => ({ ...prev, type: null }));
         }
         break;
 
       default:
-        setErrors((prev) => ({ ...prev, [name]: null }));
+        setErrors((prev) => ({ ...prev, type: null }));
         break;
     }
   };

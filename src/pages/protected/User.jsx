@@ -36,15 +36,7 @@ function User() {
       icon: <FaEdit size={20} />,
       type: "Edit",
       onClick: (id) => {
-        console.log(`Edit ${id}`);
-      },
-    },
-    {
-      label: "Delete",
-      icon: <FaTrashAlt size={20} />,
-      type: "Delete",
-      onClick: (id) => {
-        console.log(`Delete ${id}`);
+        navigate(`/dashboard/user/${id}`);
       },
     },
   ];

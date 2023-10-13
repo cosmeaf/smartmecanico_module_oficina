@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "./SmartForm";
-import "./SmartInput.css"; // Certifique-se de importar o arquivo CSS corretamente
+import "./SmartInput.css";
 
-const SmartInput = ({ label, name, placeholder, type = "text" }) => {
+const SmartInput = ({
+  label,
+  name,
+  placeholder,
+  type = "text",
+  value = "",
+}) => {
   const { errors, validateInput } = useForm();
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(value || "");
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   return (
     <div className="smart-input-container">
@@ -19,7 +29,7 @@ const SmartInput = ({ label, name, placeholder, type = "text" }) => {
         name={name}
         placeholder={placeholder}
         id={name}
-        value={inputValue}
+        value={inputValue || ""}
         onChange={(e) => setInputValue(e.target.value)}
         onBlur={(e) => {
           validateInput(e.target.name, inputValue, {

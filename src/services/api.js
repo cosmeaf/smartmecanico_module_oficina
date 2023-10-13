@@ -86,7 +86,25 @@ const api = {
       });
 
       const data = await response.json();
-      console.log(data);
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
+
+  // GET USER BY ID
+  getUserById: async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/${id}/`, {
+        method: "GET",
+        headers: getHeaders(),
+      });
+
+      const data = await response.json();
       if (response.ok) {
         return { status: true, data };
       } else {
@@ -98,19 +116,19 @@ const api = {
   },
 
   // POST USER
-  postUser: async (username, email, first_name, last_name) => {
+  postUser: async (email, first_name, last_name, phone_number) => {
     try {
-      const response = await fetch(`${BASE_URL}/user/`, {
+      const response = await fetch(`${BASE_URL}/users/`, {
         method: "POST",
         headers: getHeaders(),
-        body: JSON.stringify({ username, email, first_name, last_name }),
+        body: JSON.stringify({ email, first_name, last_name, phone_number }),
       });
 
       const data = await response.json();
       if (response.ok) {
         return { status: true, data };
       } else {
-        throw new Error(data.message || "Erro no tokenVerify");
+        return { status: false, data };
       }
     } catch (error) {
       return { status: false, message: error.message };
@@ -118,19 +136,25 @@ const api = {
   },
 
   // PUT USER
-  putUser: async (username, email, first_name, last_name) => {
+  putUser: async (email, first_name, last_name, phone_number, birthday) => {
     try {
       const response = await fetch(`${BASE_URL}/user/`, {
         method: "PUT",
         headers: getHeaders(),
-        body: JSON.stringify({ username, email, first_name, last_name }),
+        body: JSON.stringify({
+          email,
+          first_name,
+          last_name,
+          phone_number,
+          birthday: birthday || null,
+        }),
       });
 
       const data = await response.json();
       if (response.ok) {
         return { status: true, data };
       } else {
-        throw new Error(data.message || "Erro no tokenVerify");
+        return { status: false, data };
       }
     } catch (error) {
       return { status: false, message: error.message };
@@ -138,19 +162,19 @@ const api = {
   },
 
   // PATCH USER
-  patchUser: async (username, email, first_name, last_name) => {
+  patchUser: async (id, email, first_name, last_name, phone_number) => {
     try {
-      const response = await fetch(`${BASE_URL}/user/`, {
+      const response = await fetch(`${BASE_URL}/users/${id}/`, {
         method: "PATCH",
         headers: getHeaders(),
-        body: JSON.stringify({ username, email, first_name, last_name }),
+        body: JSON.stringify({ email, first_name, last_name, phone_number }),
       });
 
       const data = await response.json();
       if (response.ok) {
         return { status: true, data };
       } else {
-        throw new Error(data.message || "Erro no tokenVerify");
+        return { status: false, data };
       }
     } catch (error) {
       return { status: false, message: error.message };
