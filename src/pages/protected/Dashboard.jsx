@@ -9,7 +9,7 @@ const Dashboard = () => {
       <Sidebar />
       <div className="flex flex-col flex-grow">
         <Header />
-        <div className="flex flex-col flex-grow px-4  overflow-y-auto bg-gray-100">
+        <div className="flex flex-col flex-grow px-4 overflow-y-hidden bg-gray-100 position relative overflow-x-hidden">
           <Outlet />
         </div>
       </div>

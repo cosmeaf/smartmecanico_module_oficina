@@ -297,6 +297,25 @@ const api = {
       return { status: false, message: error.message };
     }
   },
+
+  // GET SERVICES
+  servieGet: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/service/`, {
+        method: "GET",
+        headers: getHeaders(),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
 };
 
 export default api;
