@@ -86,7 +86,6 @@ const api = {
       });
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         return { status: true, data };
       } else {
@@ -106,6 +105,26 @@ const api = {
       });
 
       const data = await response.json();
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
+
+  // GET USER
+  getUserByIdAllData: async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/${id}/all_data/`, {
+        method: "GET",
+        headers: getHeaders(),
+      });
+
+      const data = await response.json();
+
       if (response.ok) {
         return { status: true, data };
       } else {

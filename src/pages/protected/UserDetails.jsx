@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsSkipBackwardFill } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 import SmartButton from "../../components/buttons/SmartButton";
+import api from "../../services/api";
 
 const UserDetails = () => {
+  const [user, setUser] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -13,7 +16,7 @@ const UserDetails = () => {
     return `${datePart} ${timePart}`;
   }
 
-  const user = {
+  const userData = {
     id: "b024645c-e487-443a-9f57-9b119d3bab5e",
     address: [
       {
@@ -67,6 +70,27 @@ const UserDetails = () => {
     user_permissions: [],
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await api.getUserByIdAllData(id);
+        if (response.status) {
+          setUser(response.data);
+        } else {
+          console.error("Erro ao buscar dados do usuário");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados do usuário", error);
+      }
+    }
+
+    fetchData();
+  }, [id]);
+
+  if (!user) {
+    return <Spinner />;
+  }
+
   return (
     <div className="content p-4 md:p-4 lg:w-full max-w-1200 mx-auto min-h-screen">
       <div className="flex justify-between mb-3">
@@ -76,7 +100,7 @@ const UserDetails = () => {
             variant="btnPrimary"
             icon={BsSkipBackwardFill}
             title="Voltar"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/dashboard/user/")}
           />
         </div>
       </div>
@@ -86,51 +110,50 @@ const UserDetails = () => {
         <div className="w-1/4 pr-4 flex flex-col items-center">
           <img
             src={
-              user.image || "https://bootdey.com/img/Content/avatar/avatar7.png"
+              user?.image ||
+              "https://bootdey.com/img/Content/avatar/avatar7.png"
             }
-            alt={user.first_name + " " + user.last_name}
+            alt=""
             width={200}
             height={200}
             className="mb-4"
           />
 
           <strong>Último Acesso:</strong>
-          <p>Último Acesso: {formatDateWithTime(user.last_failed_login)}</p>
+          <p>Último Acesso: {user?.last_failed_login}</p>
         </div>
 
         <div className="w-3/4 pl-4 flex">
           <div className="w-1/3 pr-4">
             <p className="mb-4 font-bold text-xl">Dados Cleinte:</p>
             <p>
-              Nome: {user.first_name} {user.last_name}
+              Nome: {user?.first_name} {user?.last_name}
             </p>
-            <p>Telefone: {user.phone_number}</p>
-            <p>
-              Data de Nascimento: {user.birthday.split("-").reverse().join("/")}
-            </p>
+            <p>Telefone: {user?.phone_number}</p>
+            <p>Data de Nascimento: {user?.birthday}</p>
           </div>
 
-          {user.address.length > 0 && (
+          {user?.address && (
             <div className="w-1/3 pr-4">
               <p className="mb-4 font-bold text-xl">Dados Endereço:</p>
-              <p>CEP: {user.address[0].cep}</p>
-              <p>Logradouro: {user.address[0].logradouro}</p>
-              <p>Complemento: {user.address[0].complemento}</p>
-              <p>Bairro: {user.address[0].bairro}</p>
-              <p>Cidade: {user.address[0].localidade}</p>
-              <p>UF: {user.address[0].uf}</p>
+              <p>CEP: {user?.address[0]?.cep}</p>
+              <p>Logradouro: {user?.address[0]?.logradouro}</p>
+              <p>Complemento: {user?.address[0]?.complemento}</p>
+              <p>Bairro: {user?.address[0]?.bairro}</p>
+              <p>Cidade: {user?.address[0]?.localidade}</p>
+              <p>UF: {user?.address[0]?.uf}</p>
             </div>
           )}
 
-          {user.vehicles.length > 0 && (
+          {user?.vehicles && (
             <div className="w-1/3">
               <p className="mb-4 font-bold text-xl">Dados Veículo:</p>
-              <p>Marca: {user.vehicles[0].brand}</p>
-              <p>Modelo: {user.vehicles[0].model}</p>
-              <p>Combustível: {user.vehicles[0].fuel}</p>
-              <p>Ano: {user.vehicles[0].year}</p>
-              <p>Hodômetro: {user.vehicles[0].odometer}</p>
-              <p>Placa: {user.vehicles[0].plate}</p>
+              <p>Marca: {user?.vehicles[0]?.brand}</p>
+              <p>Modelo: {user?.vehicles[0]?.model}</p>
+              <p>Combustível: {user?.vehicles[0]?.fuel}</p>
+              <p>Ano: {user?.vehicles[0]?.year}</p>
+              <p>Hodômetro: {user?.vehicles[0]?.odometer}</p>
+              <p>Placa: {user?.vehicles[0]?.plate}</p>
             </div>
           )}
         </div>
