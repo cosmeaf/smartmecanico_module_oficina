@@ -86,6 +86,7 @@ const api = {
       });
 
       const data = await response.json();
+      console.log(data);
       if (response.ok) {
         return { status: true, data };
       } else {

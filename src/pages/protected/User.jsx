@@ -28,7 +28,7 @@ function User() {
       icon: <FaEye size={20} />,
       type: "Visualizer",
       onClick: (id) => {
-        console.log(`Visualizar ${id}`);
+        navigate(`/dashboard/user-all/${id}`);
       },
     },
     {

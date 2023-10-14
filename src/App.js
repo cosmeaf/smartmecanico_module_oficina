@@ -18,6 +18,7 @@ import Register from "./pages/public/Register";
 import Recovery from "./pages/public/Recovery";
 import About from "./pages/public/About";
 import UserUpdate from "./pages/protected/UserUpdate";
+import UserDetails from "./pages/protected/UserDetails";
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
@@ -67,11 +68,15 @@ const App = () => {
           }
         />
 
-        <Route path="/dashboard" element={<ProtectedRoute />}>
+        <Route
+          path="/dashboard"
+          element={isAuthenticated ? <ProtectedRoute /> : <Login />}
+        >
           <Route index element={<Admin />} />
           <Route path="user" element={<User />} />
           <Route path="user-register" element={<UserRegister />} />
           <Route path="user/:id" element={<UserUpdate />} />
+          <Route path="user-all/:id" element={<UserDetails />} />
           <Route path="address" element={<Address />} />
           <Route path="vehicle" element={<Vehicle />} />
           <Route path="vehicle-add" element={<VehicleAdd />} />
