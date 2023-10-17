@@ -3,10 +3,12 @@ import PropTypes from "prop-types";
 
 function DataCountLine({ rowsPerPage, onRowsPerPageChange }) {
   return (
-    <div className="flex items-center p-2">
-      <label className="mr-2 text-gray-700 dark:text-gray-300">Linhas:</label>
+    <div className="flex items-center">
+      <label className="mr-2 text-gray-700 dark:text-gray-300">
+        Total por Linha:
+      </label>
       <select
-        className="text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md p-2 hover:border-blue-500 transition-colors duration-200"
+        className="text-gray-700 px-2 py-1 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md hover:border-blue-500 transition-colors duration-200"
         value={rowsPerPage}
         onChange={(e) => onRowsPerPageChange(parseInt(e.target.value))}
       >

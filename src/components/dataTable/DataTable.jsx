@@ -15,8 +15,11 @@ function DataTable({
   const [currentPage, setCurrentPage] = useState(1);
 
   const filteredData = dataSource.filter((item) =>
-    Object.values(item).some((value) =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    Object.values(item).some(
+      (value) =>
+        value !== null &&
+        value !== undefined &&
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
@@ -73,7 +76,7 @@ function DataTable({
               key={rowIndex}
             >
               {columnHeaders.map((column, columnIndex) => (
-                <td className="px-6 py-1" key={columnIndex}>
+                <td className="px-6 py-0" key={columnIndex}>
                   {column.commands
                     ? column.commands.map((command, cmdIndex) => (
                         <button

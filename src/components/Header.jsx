@@ -21,7 +21,7 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="flex justify-between items-center bg-white p-4 h-16 shadow-md z-50">
+    <div className="flex justify-between items-center bg-white p-4 h-16 shadow-md z-50 w-full">
       <div className="flex items-center space-x-4 ml-4">
         <div className="relative">
           <FaSearch
@@ -30,7 +30,7 @@ const Header = () => {
           />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Buscar..."
             className="pl-8 border p-2 rounded-md"
             style={{ width: "250px" }}
           />
@@ -59,16 +59,16 @@ const Header = () => {
           {dropdownOpen && (
             <div className="absolute right-0 mt-4 w-48 bg-white border rounded-md shadow-lg">
               <a href="#" className="block p-4 hover:bg-gray-100">
-                Profile
+                Perfil
               </a>
               <a href="#" className="block p-4 hover:bg-gray-100">
-                Settings
+                Configurações
               </a>
               <button
                 onClick={signOut}
                 className="block w-full text-left p-4 hover:bg-gray-100"
               >
-                Logout
+                Sair
               </button>
             </div>
           )}

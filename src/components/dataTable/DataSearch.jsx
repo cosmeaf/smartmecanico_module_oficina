@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 
 function DataSearch({ onSearch }) {
   return (
-    <div className="flex items-center justify-end w-80 relative">
+    <div className="flex items-center justify-end w-30 relative">
       <input
         type="text"
         id="table-search"
         className="block w-full pl-10 pr-3 py-2 text-sm text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md bg-white shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Search for items"
+        placeholder="Buscar"
         onChange={(e) => onSearch(e.target.value)}
         onBlur={(e) => onSearch(e.target.value)}
       />

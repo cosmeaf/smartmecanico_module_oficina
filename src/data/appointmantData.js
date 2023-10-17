@@ -4,7 +4,7 @@ const data = [
     id: 1,
     first_name: "Cosme",
     address: "Rua Silva Jardim, 452, Lugar Nenhum",
-    vehicle: "",
+    vehicle: "Honda Civic",
     data: "2023-10-20",
     hour: "08:00",
   },

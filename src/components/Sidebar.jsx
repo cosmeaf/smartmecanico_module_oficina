@@ -1,74 +1,130 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { HiMenuAlt3 } from "react-icons/hi";
+import { NavLink } from "react-router-dom";
+import Logo from "../image/logo-light.svg";
+import {
+  BsArrowLeftShort,
+  BsBuildingGear,
+  BsCalendarDate,
+  BsChevronDown,
+} from "react-icons/bs";
 import { MdOutlineDashboard } from "react-icons/md";
-import { RiSettings4Line } from "react-icons/ri";
-import { IoCarSportOutline } from "react-icons/io5";
-import { BsBuildingGear, BsCalendarDate, BsCashCoin } from "react-icons/bs";
-import { VscTools } from "react-icons/vsc";
 import { AiOutlineUser } from "react-icons/ai";
+import { VscTools } from "react-icons/vsc";
+import { FaCogs, FaSignOutAlt } from "react-icons/fa";
+import { IoCarSportOutline } from "react-icons/io5";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
+  const [submenuOpen, setSubmenuOpen] = useState(false);
 
-  const menus = [
-    { name: "Dashboard", link: "/dashboard", icon: MdOutlineDashboard },
-    { name: "Customer", link: "/dashboard/user", icon: AiOutlineUser },
-    { name: "Address", link: "/dashboard/address", icon: BsBuildingGear },
-    { name: "Vehicle", link: "/dashboard/vehicle", icon: IoCarSportOutline },
-    { name: "Services", link: "/dashboard/services", icon: VscTools },
+  const Menus = [
+    { title: "Dashboard", link: "/dashboard", icon: MdOutlineDashboard },
     {
-      name: "Appointment",
+      title: "Clientes",
+      icon: AiOutlineUser,
+      submenu: true,
+      submenuItems: [
+        { title: "Clientes", link: "/dashboard/user" },
+        {
+          title: "Endereços",
+          link: "/dashboard/address",
+        },
+        {
+          title: "Veículos",
+          link: "/dashboard/vehicle",
+        },
+      ],
+    },
+    { title: "Serviços", link: "/dashboard/services", icon: VscTools },
+    {
+      title: "Agendamentos",
       link: "/dashboard/appointment",
       icon: BsCalendarDate,
     },
-    { name: "Budget", link: "/dashboard", icon: BsCashCoin },
-    { name: "Setting", link: "/dashboard", icon: RiSettings4Line },
+    { title: "Configurações", link: "/dashboard", icon: FaCogs },
+    { title: "Sair", link: "/dashboard", icon: FaSignOutAlt },
   ];
 
   return (
     <div
-      className={`bg-[#0e0e0e] min-h-screen ${
-        open ? "w-72" : "w-16"
-      } duration-500 text-gray-100 px-4`}
+      className={`bg-[#040404] text-white transition-all duration-500 ${
+        open ? "shadow-lg w-72" : "w-20"
+      } relative`}
     >
-      <div className="py-3 flex justify-end">
-        <HiMenuAlt3
-          size={26}
+      <BsArrowLeftShort
+        className={`bg-gray-200 text-gray-900 text-3xl rounded-md -right-3 top-20 absolute cursor-pointer transition-transform duration-500 ${
+          open ? "rotate-180" : "rotate-0"
+        }`}
+        onClick={() => setOpen(!open)}
+      />
+      <div
+        className={`flex justify-between items-center py-5 mt-5 duration-500 ${
+          open ? "px-5" : "px-4"
+        }`}
+      >
+        <img
+          src={Logo}
+          alt="Smart Mecânico"
+          width={50}
           className="cursor-pointer"
-          onClick={() => setOpen(!open)}
         />
+        <h1
+          className={`whitespace-pre origin-left text-xl transition-all duration-500 ${
+            !open && "opacity-0 translate-x-28 overflow-hidden "
+          }`}
+        >
+          Smart Mecânico
+        </h1>
       </div>
-      <div className="mt-4 flex flex-col gap-4 relative">
-        {menus?.map((menu, i) => (
-          <Link
-            to={menu?.link}
-            key={i}
-            className={` ${
-              menu?.margin && "mt-5"
-            } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md`}
-          >
-            <div>{React.createElement(menu?.icon, { size: "20" })}</div>
-            <h2
-              style={{
-                transitionDelay: `${i + 3}00ms`,
-              }}
-              className={`whitespace-pre duration-500 ${
-                !open && "opacity-0 translate-x-28 overflow-hidden"
-              }`}
-            >
-              {menu?.name}
-            </h2>
-            <h2
-              className={`${
-                open && "hidden"
-              } absolute left-48 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit z-50  `}
-            >
-              {menu?.name}
-            </h2>
-          </Link>
-        ))}
-      </div>
+
+      <ul className="p-2">
+        {Menus.map(
+          ({ title, link, icon: Icon, submenu, submenuItems }, index) => (
+            <li key={index}>
+              <NavLink
+                to={link}
+                activeClassName="bg-indigo-700 text-green-400"
+                className="text-gray-100 text-sm flex items-center gap-x-4 cursor-pointer p-2 rounded-md mt-2 transition-transform duration-300 hover:bg-gray-100 hover:text-gray-900"
+              >
+                <span className={`text-2xl ${open ? "px-0" : "px-3"}`}>
+                  {React.createElement(Icon)}
+                </span>
+                <span
+                  className={`whitespace-pre origin-left text-xl flex-1 transition-all duration-500 ${
+                    !open && "opacity-0 translate-x-28 overflow-hidden "
+                  }`}
+                >
+                  {title}
+                </span>
+                {submenu && (
+                  <BsChevronDown
+                    className={`transition-transform duration-500 ${
+                      submenuOpen ? "rotate-180" : ""
+                    }`}
+                    onClick={() => setSubmenuOpen(!submenuOpen)}
+                  />
+                )}
+              </NavLink>
+
+              {submenu && submenuOpen && open && (
+                <ul>
+                  {submenuItems.map(({ title, link }, index) => (
+                    <li key={index}>
+                      <NavLink
+                        to={link}
+                        activeClassName="bg-indigo-700 text-green-400"
+                        className="text-gray-100 text-sm flex items-center gap-x-4 cursor-pointer p-2 rounded-md mt-2 transition-transform duration-300 hover:bg-gray-100 hover:text-gray-950"
+                      >
+                        {title}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          )
+        )}
+      </ul>
     </div>
   );
 };

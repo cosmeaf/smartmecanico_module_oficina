@@ -11,7 +11,6 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <App />
-      <Notification />
     </AuthProvider>
   </React.StrictMode>
 );

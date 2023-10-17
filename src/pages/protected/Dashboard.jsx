@@ -5,15 +5,15 @@ import Header from "../../components/Header";
 
 const Dashboard = () => {
   return (
-    <section className="flex h-screen">
+    <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col w-full">
         <Header />
-        <div className="flex flex-col flex-grow px-4 overflow-y-hidden bg-gray-100 position relative overflow-x-hidden">
+        <div className="flex-1 overflow-y-auto">
           <Outlet />
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
