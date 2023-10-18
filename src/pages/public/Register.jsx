@@ -1,99 +1,151 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { useAuth } from "../../context/AuthContext";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import packageJson from "../../../package.json";
 import { ReactComponent as Logo } from "../../image/logo.svg";
-
-const validationSchema = yup.object({
-  email: yup.string().email("Invalid email format").required("Required"),
-  password: yup
-    .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Required"),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password"), undefined], "Passwords must match!")
-    .required("Required"),
-});
+import { SmartForm, SmartInput } from "../../components/forms/";
+import { showMessage } from "../../components/Notification";
+import api from "../../services/api";
 
 const Register = () => {
-  const { login } = useAuth();
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      login(values.email, values.password);
-    },
-  });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isFormComplete, setIsFormComplete] = useState(false);
+  const [emailValue, setEmailValue] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [passconf, setPassconf] = useState("");
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const first_name = form.first_name.value;
+    const last_name = form.last_name.value;
+    const password = form.password.value;
+    const passconf = form.passconf.value;
+
+    // console.log(
+    //   email.length,
+    //   first_name.length,
+    //   last_name.length,
+    //   password.length,
+    //   passconf.length
+    // );
+    const response = await api.signUp(
+      email,
+      first_name,
+      last_name,
+      password,
+      passconf
+    );
+    if (response.status) {
+      navigate("/", { replace: true, state: { from: location } });
+      showMessage({
+        status: "success",
+        message: "Usuário Criado com Sucuesso",
+      });
+    } else {
+      showMessage({
+        status: "error",
+        message: `${response.data.error}`,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (
+      emailValue.trim().length > 0 &&
+      firstName.trim().length > 0 &&
+      lastName.trim().length > 0 &&
+      password.trim().length > 0 &&
+      passconf.trim().length > 0
+    ) {
+      setIsFormComplete(true);
+    } else {
+      setIsFormComplete(false);
+    }
+  }, [emailValue, firstName, lastName, password, passconf]);
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100">
       <Logo className="mx-auto w-32 mb-4 mt-10" />
-      <h1 className="text-2xl font-semibold mb-6">Bem Vindo de volta</h1>
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <form onSubmit={formik.handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Email</label>
-            <input
-              className="w-full p-2 border rounded"
-              type="email"
-              {...formik.getFieldProps("email")}
+      <h1 className="text-2xl font-semibold mb-6">Novo Usuário</h1>
+      <div className="bg-white p-8 rounded-lg shadow-md">
+        <SmartForm onSubmit={handleSubmit}>
+          <SmartInput
+            label="E-mail"
+            name="email"
+            placeholder="Digite seu e-mail"
+            type="email"
+            onChange={(e) => setEmailValue(e.target.value)}
+          />
+          <div className="flex justify-between items-center gap-4">
+            <SmartInput
+              label="Nome"
+              name="first_name"
+              placeholder="Nome"
+              type="text"
+              onChange={(e) => setFirstName(e.target.value)}
             />
-            {formik.touched.email && formik.errors.email ? (
-              <div className="text-red-500 mt-2 text-sm">
-                {formik.errors.email}
-              </div>
-            ) : null}
+            <SmartInput
+              label="Sobrenme"
+              name="last_name"
+              placeholder="Sobrenome"
+              type="text"
+              onChange={(e) => setLastName(e.target.value)}
+            />
           </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Password</label>
-            <input
-              className="w-full p-2 border rounded"
+          <div className="flex justify-between items-center gap-4">
+            <SmartInput
+              label="Senha"
+              name="password"
+              placeholder="Senha"
               type="password"
-              {...formik.getFieldProps("password")}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            {formik.touched.password && formik.errors.password ? (
-              <div className="text-red-500 mt-2 text-sm">
-                {formik.errors.password}
-              </div>
-            ) : null}
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">
-              Confirm Password
-            </label>
-            <input
-              className="w-full p-2 border rounded"
+            <SmartInput
+              label="Confirmar Senha"
+              name="passconf"
+              placeholder="Confirmar Senha"
               type="password"
-              {...formik.getFieldProps("confirmPassword")}
+              onChange={(e) => setPassconf(e.target.value)}
             />
-            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div className="text-red-500 mt-2 text-sm">
-                {formik.errors.confirmPassword}
-              </div>
-            ) : null}
           </div>
-          <button
-            type="submit"
-            className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Sign Up
-          </button>
-        </form>
+          {isFormComplete ? (
+            <button
+              type="submit"
+              className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer"
+            >
+              Registrar
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="w-full p-2 bg-green-300 cursor-not-allowed text-white rounded hover:bg-green-600"
+              disabled
+            >
+              Registrar
+            </button>
+          )}
+        </SmartForm>
         <div className="flex justify-between mt-4">
-          <Link to="/recovery" className="text-green-500 hover:underline">
-            Forgot Password?
+          <Link
+            to="/recovery"
+            className="text-green-500 hover:underline text-sm"
+          >
+            Recuperar Senha
           </Link>
-          <Link to="/login" className="text-green-500 hover:underline">
-            Sign In
+          <Link to="/" className="text-green-500 hover:underline text-sm">
+            Já tenho acesso
           </Link>
         </div>
+      </div>
+      <div className="flex flex-col justify-center items-center mt-10 text-sm text-green-600">
+        <p>Smart Mecânico Modulo Oficina.</p>
+        <p>
+          Versão:{" "}
+          <span className="text-bold text-black">{packageJson.version}</span>
+        </p>
       </div>
     </div>
   );

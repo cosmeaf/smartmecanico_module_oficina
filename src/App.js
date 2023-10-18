@@ -12,18 +12,11 @@ import Vehicle from "./pages/protected/Vehicle";
 import VehicleAdd from "./pages/protected/VehicleAdd";
 import Services from "./pages/protected/Services";
 import Appointment from "./pages/protected/Appointment";
-import Home from "./pages/public/Home";
 import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
 import Recovery from "./pages/public/Recovery";
-import About from "./pages/public/About";
 import UserUpdate from "./pages/protected/UserUpdate";
 import UserDetails from "./pages/protected/UserDetails";
-
-const ProtectedRoute = () => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />;
-};
 
 const App = () => {
   const { loading, isAuthenticated } = useAuth();
@@ -36,13 +29,8 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route
+          index
           path="/"
-          element={
-            isAuthenticated ? <Navigate to="/dashboard" replace /> : <Home />
-          }
-        />
-        <Route
-          path="/login"
           element={
             isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
           }
@@ -70,18 +58,42 @@ const App = () => {
 
         <Route
           path="/dashboard"
-          element={isAuthenticated ? <ProtectedRoute /> : <Login />}
+          element={isAuthenticated ? <Dashboard /> : <Login />}
         >
-          <Route index element={<Admin />} />
-          <Route path="user" element={<User />} />
-          <Route path="user-register" element={<UserRegister />} />
-          <Route path="user/:id" element={<UserUpdate />} />
-          <Route path="user-all/:id" element={<UserDetails />} />
-          <Route path="address" element={<Address />} />
-          <Route path="vehicle" element={<Vehicle />} />
-          <Route path="vehicle-add" element={<VehicleAdd />} />
-          <Route path="services" element={<Services />} />
-          <Route path="appointment" element={<Appointment />} />
+          <Route index element={isAuthenticated ? <Admin /> : <Login />} />
+          <Route path="user" element={isAuthenticated ? <User /> : <Login />} />
+          <Route
+            path="user-register"
+            element={isAuthenticated ? <UserRegister /> : <Login />}
+          />
+          <Route
+            path="user/:id"
+            element={isAuthenticated ? <UserUpdate /> : <Login />}
+          />
+          <Route
+            path="user-all/:id"
+            element={isAuthenticated ? <UserDetails /> : <Login />}
+          />
+          <Route
+            path="address"
+            element={isAuthenticated ? <Address /> : <Login />}
+          />
+          <Route
+            path="vehicle"
+            element={isAuthenticated ? <Vehicle /> : <Login />}
+          />
+          <Route
+            path="vehicle-add"
+            element={isAuthenticated ? <VehicleAdd /> : <Login />}
+          />
+          <Route
+            path="services"
+            element={isAuthenticated ? <Services /> : <Login />}
+          />
+          <Route
+            path="appointment"
+            element={isAuthenticated ? <Appointment /> : <Login />}
+          />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

@@ -9,6 +9,7 @@ const SmartInput = ({
   placeholder,
   type = "text",
   value = "",
+  onChange = () => {},
 }) => {
   const { errors, validateInput } = useForm();
   const [inputValue, setInputValue] = useState(value || "");
@@ -16,6 +17,14 @@ const SmartInput = ({
   useEffect(() => {
     setInputValue(value);
   }, [value]);
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+    if (errors[name]) {
+      errors[name] = null;
+    }
+    onChange(e);
+  };
 
   return (
     <div className="smart-input-container">
@@ -30,13 +39,18 @@ const SmartInput = ({
         placeholder={placeholder}
         id={name}
         value={inputValue || ""}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={handleChange}
         onBlur={(e) => {
-          validateInput(e.target.name, inputValue, {
-            password: e.target.form.password
-              ? e.target.form.password.value
-              : "",
-          });
+          validateInput(
+            e.target.name,
+            inputValue,
+            {
+              password: e.target.form.password
+                ? e.target.form.password.value
+                : "",
+            },
+            label
+          );
         }}
         className="smart-input-field"
       />
@@ -51,6 +65,8 @@ SmartInput.propTypes = {
   placeholder: PropTypes.string,
   type: PropTypes.string,
   value: PropTypes.string,
+  error: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 export default SmartInput;

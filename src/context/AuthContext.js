@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import api from "../services/api";
+import { showMessage } from "../components/Notification";
 
 const AuthContext = createContext();
 
@@ -46,6 +47,10 @@ const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
+  const showNotification = (status, message, position) => {
+    showMessage({ status, message, position });
+  };
+
   const signIn = async (email, password) => {
     setLoading(true);
     const data = await api.signIn(email, password);
@@ -89,7 +94,14 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, signOut, isAuthenticated, loading, user }}
+      value={{
+        signIn,
+        signOut,
+        isAuthenticated,
+        loading,
+        user,
+        showNotification,
+      }}
     >
       {children}
     </AuthContext.Provider>

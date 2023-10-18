@@ -77,6 +77,33 @@ const api = {
     }
   },
 
+  // SIGN UP
+  signUp: async (email, first_name, last_name, password, passconf) => {
+    try {
+      const response = await fetch(`${BASE_URL}/register/`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({
+          email,
+          first_name,
+          last_name,
+          password,
+          passconf,
+        }),
+      });
+
+      const responseBody = await response.text();
+      const data = JSON.parse(responseBody);
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
+
   // GET USER
   getUser: async () => {
     try {

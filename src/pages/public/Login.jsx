@@ -31,7 +31,7 @@ const Login = () => {
         navigate("/dashboard", { replace: true, state: { from: location } });
         showMessage({
           status: "success",
-          message: "Login bem-sucedido!",
+          message: "Seja bem vindo",
         });
       } else {
         showMessage({
@@ -49,7 +49,7 @@ const Login = () => {
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Email</label>
+            <label className="block text-sm font-medium mb-2">E-mail</label>
             <input
               className="w-full p-2 border rounded"
               type="email"
@@ -63,7 +63,7 @@ const Login = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Password</label>
+            <label className="block text-sm font-medium mb-2">Senha</label>
             <input
               className="w-full p-2 border rounded"
               type="password"
@@ -80,15 +80,15 @@ const Login = () => {
             type="submit"
             className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600"
           >
-            Sign In
+            Entrar
           </button>
         </form>
         <div className="flex justify-between mt-4">
           <Link to="/recovery" className="text-green-500 hover:underline">
-            Forgot Password?
+            Recuperar Senha
           </Link>
           <Link to="/register" className="text-green-500 hover:underline">
-            Sign Up
+            Registrar-se
           </Link>
         </div>
       </div>

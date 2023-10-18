@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../image/logo-light.svg";
 import {
   BsArrowLeftShort,
-  BsBuildingGear,
   BsCalendarDate,
   BsChevronDown,
 } from "react-icons/bs";
@@ -11,39 +10,54 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { AiOutlineUser } from "react-icons/ai";
 import { VscTools } from "react-icons/vsc";
 import { FaCogs, FaSignOutAlt } from "react-icons/fa";
-import { IoCarSportOutline } from "react-icons/io5";
+
+const Menus = [
+  { title: "Dashboard", link: "/dashboard", icon: MdOutlineDashboard },
+  {
+    title: "Clientes",
+    icon: AiOutlineUser,
+    submenu: true,
+    submenuItems: [
+      { title: "Clientes", link: "/dashboard/user" },
+      {
+        title: "Endereços",
+        link: "/dashboard/address",
+      },
+      {
+        title: "Veículos",
+        link: "/dashboard/vehicle",
+      },
+    ],
+  },
+  { title: "Serviços", link: "/dashboard/services", icon: VscTools },
+  {
+    title: "Agendamentos",
+    link: "/dashboard/appointment",
+    icon: BsCalendarDate,
+  },
+  { title: "Configurações", link: "/dashboard", icon: FaCogs },
+  { title: "Sair", link: "/dashboard", icon: FaSignOutAlt },
+];
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(false);
 
-  const Menus = [
-    { title: "Dashboard", link: "/dashboard", icon: MdOutlineDashboard },
-    {
-      title: "Clientes",
-      icon: AiOutlineUser,
-      submenu: true,
-      submenuItems: [
-        { title: "Clientes", link: "/dashboard/user" },
-        {
-          title: "Endereços",
-          link: "/dashboard/address",
-        },
-        {
-          title: "Veículos",
-          link: "/dashboard/vehicle",
-        },
-      ],
-    },
-    { title: "Serviços", link: "/dashboard/services", icon: VscTools },
-    {
-      title: "Agendamentos",
-      link: "/dashboard/appointment",
-      icon: BsCalendarDate,
-    },
-    { title: "Configurações", link: "/dashboard", icon: FaCogs },
-    { title: "Sair", link: "/dashboard", icon: FaSignOutAlt },
-  ];
+  const closeSidebarOnSmallScreens = () => {
+    if (window.innerWidth < 1440) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", closeSidebarOnSmallScreens);
+    closeSidebarOnSmallScreens();
+    return () => {
+      window.removeEventListener("resize", closeSidebarOnSmallScreens);
+    };
+  }, []);
 
   return (
     <div
@@ -83,7 +97,7 @@ const Sidebar = () => {
             <li key={index}>
               <NavLink
                 to={link}
-                activeClassName="bg-indigo-700 text-green-400"
+                activeClassName="active"
                 className="text-gray-100 text-sm flex items-center gap-x-4 cursor-pointer p-2 rounded-md mt-2 transition-transform duration-300 hover:bg-gray-100 hover:text-gray-900"
               >
                 <span className={`text-2xl ${open ? "px-0" : "px-3"}`}>
@@ -112,7 +126,7 @@ const Sidebar = () => {
                     <li key={index}>
                       <NavLink
                         to={link}
-                        activeClassName="bg-indigo-700 text-green-400"
+                        activeClassName="active"
                         className="text-gray-100 text-sm flex items-center gap-x-4 cursor-pointer p-2 rounded-md mt-2 transition-transform duration-300 hover:bg-gray-100 hover:text-gray-950"
                       >
                         {title}

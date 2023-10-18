@@ -6,21 +6,21 @@ const FormContext = createContext();
 const SmartForm = ({ children, onSubmit }) => {
   const [errors, setErrors] = useState({});
 
-  const validateInput = (type, value, allValues) => {
-    switch (type) {
-      case "text":
-        if (!value || !value.trim()) {
-          setErrors((prev) => ({ ...prev, type: "Field cannot be empty." }));
-        } else {
-          setErrors((prev) => ({ ...prev, type: null }));
-        }
-        break;
+  const validateInput = (type, value, allValues, label) => {
+    if (!value || !value.trim()) {
+      setErrors((prev) => ({
+        ...prev,
+        [type]: `${label} não pode estar vazio.`,
+      }));
+      return;
+    }
 
+    switch (type) {
       case "email":
         if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value)) {
-          setErrors((prev) => ({ ...prev, type: "Invalid email." }));
+          setErrors((prev) => ({ ...prev, [type]: "Invalid email." }));
         } else {
-          setErrors((prev) => ({ ...prev, type: null }));
+          setErrors((prev) => ({ ...prev, [type]: null }));
         }
         break;
 
@@ -28,18 +28,18 @@ const SmartForm = ({ children, onSubmit }) => {
         if (value.length < 8) {
           setErrors((prev) => ({
             ...prev,
-            type: "Password must be at least 8 characters.",
+            [type]: "Password must be at least 8 characters.",
           }));
         } else {
-          setErrors((prev) => ({ ...prev, type: null }));
+          setErrors((prev) => ({ ...prev, [type]: null }));
         }
         break;
 
       case "passconf":
         if (value !== allValues.password) {
-          setErrors((prev) => ({ ...prev, type: "Passwords do not match." }));
+          setErrors((prev) => ({ ...prev, [type]: "Passwords do not match." }));
         } else {
-          setErrors((prev) => ({ ...prev, type: null }));
+          setErrors((prev) => ({ ...prev, [type]: null }));
         }
         break;
 
@@ -60,15 +60,15 @@ const SmartForm = ({ children, onSubmit }) => {
         if (isNaN(value)) {
           setErrors((prev) => ({
             ...prev,
-            type: "Por favor, insira um número válido.",
+            [type]: "Por favor, insira um número válido.",
           }));
         } else {
-          setErrors((prev) => ({ ...prev, type: null }));
+          setErrors((prev) => ({ ...prev, [type]: null }));
         }
         break;
 
       default:
-        setErrors((prev) => ({ ...prev, type: null }));
+        setErrors((prev) => ({ ...prev, [type]: null }));
         break;
     }
   };
@@ -88,7 +88,8 @@ const SmartForm = ({ children, onSubmit }) => {
         validateInput(
           child.props.name,
           formValues[child.props.name],
-          formValues
+          formValues,
+          child.props.label // passing the label here
         );
       }
     }
