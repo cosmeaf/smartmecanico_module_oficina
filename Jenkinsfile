@@ -1,55 +1,76 @@
+def SCRIPT_PATH = "/home/superuser/scripts/"
+def PROJECT_PATH = "/home/superuser/projects/smartmecanico_module_oficina/"
+def BACKUP_PATH = "/home/superuser/projects/"
+
 pipeline {
-    agent any 
+    agent any
 
     environment {
-        PROJECT_PATH = '/home/superuser/projects/smartmecanico_module_oficina'
-        SCRIPTS_PATH = '/home/superuser/scripts'
+        SCRIPT = "${SCRIPT_PATH}deploy_script.sh"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Considerando que seu código está no repositório git configurado no job do Jenkins:
                 checkout scm
+            }
+        }
+
+        stage('Stop Service') {
+            steps {
+                sh 'sudo systemctl stop smartmecanico-serve.service'
+            }
+        }
+
+        stage('Backup Old Project') {
+            steps {
+                sh "sudo cp -rp ${PROJECT_PATH} ${BACKUP_PATH}smartmecanico_module_oficina.\$(date +%Y%m%d_%H%M%S).bkp"
+            }
+        }
+
+        stage('Remove Old Project') {
+            steps {
+                sh "sudo rm -rf ${PROJECT_PATH}"
+            }
+        }
+
+        stage('Copy New Project') {
+            steps {
+                sh "cp -r . ${PROJECT_PATH}"
+            }
+        }
+
+        stage('Install Dependencies and Build') {
+            steps {
+                dir(PROJECT_PATH) {
+                    sh '''
+                        npm install
+                        npm run build
+                    '''
+                }
             }
         }
 
         stage('Increment Version') {
             steps {
-                script {
-                    sh "${SCRIPTS_PATH}/increment-version.sh"
+                dir(PROJECT_PATH) {
+                    sh '''
+                        CURRENT_VERSION=$(grep '"version"' package.json | cut -d\" -f4)
+                        NEW_VERSION=$(echo "$CURRENT_VERSION" | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+                        sed -i "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/g" package.json
+                        echo "New Version: $NEW_VERSION"
+                    '''
                 }
             }
         }
 
-        stage('Build and Deploy') {
+        stage('Start Service') {
             steps {
-                script {
-                    // Parar o serviço
-                    sh "sudo systemctl stop smartmecanico-serve.service"
-
-                    // Backup do projeto atual
-                    sh "sudo cp -rp ${PROJECT_PATH} ${PROJECT_PATH}.$(date +%Y%m%d_%H%M%S).bkp"
-
-                    // Remover o projeto atual
-                    sh "sudo rm -rf ${PROJECT_PATH}"
-
-                    // Clonar o repositório mais recente
-                    sh "git clone git@github.com:cosmeaf/smartmecanico_module_oficina.git ${PROJECT_PATH}"
-
-                    // Navegar até o diretório do projeto
-                    dir(PROJECT_PATH) {
-                        // Instalar dependências e construir o projeto
-                        sh """
-                            npm install
-                            npm run build
-                        """
-                    }
-
-                    // Iniciar o serviço
-                    sh "sudo systemctl start smartmecanico-serve.service"
-                    sh "sudo systemctl restart smartmecanico-serve.service"
-                }
+                sh '''
+                    sudo systemctl start smartmecanico-serve.service
+                    sudo systemctl restart smartmecanico-serve.service
+                    sudo systemctl status smartmecanico-serve.service
+                '''
             }
         }
     }
