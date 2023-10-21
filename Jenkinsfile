@@ -2,40 +2,47 @@ pipeline {
     agent any
 
     stages {
-        stage('Stop Service') {
+        stage('Atualizar Versionamento') {
             steps {
-                sh 'sudo systemctl stop smartmecanico-serve.service'
+                script {
+                    // Lendo o package.json
+                    def packageJson = readJSON file: '/home/superuser/projects/smartmecanico_module_oficina/package.json'
+                    
+                    // Obtendo e atualizando a versão
+                    def parts = packageJson.version.split('\\.')
+                    def newVersion = "${parts[0]}.${parts[1]}.${parts[2].toInteger() + 1}"
+                    packageJson.version = newVersion
+                    
+                    // Escrevendo a versão atualizada de volta no package.json
+                    writeJSON file: '/home/superuser/projects/smartmecanico_module_oficina/package.json', json: packageJson
+
+                    echo "Version atualizado para: ${newVersion}"
+                }
             }
         }
 
-        stage('Backup and Clone') {
+        stage('Deploy') {
             steps {
-                sh '''
-                cd /home/superuser/projects
-                sudo cp -rp smartmecanico_module_oficina smartmecanico_module_oficina.$(date +%Y%m%d_%H%M%S).bkp
-                sudo rm -rf smartmecanico_module_oficina
-                git clone git@github.com:cosmeaf/smartmecanico_module_oficina.git
-                '''
+                script {
+                    // Executando o script de deploy
+                    def retorno = sh(script: 'sudo /home/superuser/scripts/reactjs_deploy_v001.sh', returnStatus: true)
+                    if (retorno != 0) {
+                        error("Erro ao executar o script de deploy.")
+                    }
+                }
             }
         }
+    }
 
-        stage('Install and Build') {
-            steps {
-                sh '''
-                cd /home/superuser/projects/smartmecanico_module_oficina
-                npm install
-                npm run build
-                '''
-            }
+    post {
+        always {
+            echo 'Deploy finalizado.'
         }
-
-        stage('Start Service') {
-            steps {
-                sh '''
-                sudo systemctl start smartmecanico-serve.service
-                sudo systemctl restart smartmecanico-serve.service
-                '''
-            }
+        success {
+            echo 'Deploy foi bem-sucedido!'
+        }
+        failure {
+            echo 'Deploy falhou!'
         }
     }
 }
