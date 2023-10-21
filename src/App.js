@@ -17,6 +17,8 @@ import Register from "./pages/public/Register";
 import Recovery from "./pages/public/Recovery";
 import UserUpdate from "./pages/protected/UserUpdate";
 import UserDetails from "./pages/protected/UserDetails";
+import OtpVerify from "./pages/public/OtpVerify";
+import ChangePassword from "./pages/public/ChangePassword";
 
 const App = () => {
   const { loading, isAuthenticated } = useAuth();
@@ -55,6 +57,8 @@ const App = () => {
             )
           }
         />
+        <Route path="/otp-verify" element={<OtpVerify />} />
+        <Route path="/change-password" element={<ChangePassword />} />
 
         <Route
           path="/dashboard"

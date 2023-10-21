@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "./SmartForm";
-import "./SmartInput.css";
+import "./SmartForm.css";
 
 const SmartInput = ({
   label,
@@ -11,7 +11,7 @@ const SmartInput = ({
   value = "",
   onChange = () => {},
 }) => {
-  const { errors, validateInput } = useForm();
+  const { errors = {}, validateInput } = useForm();
   const [inputValue, setInputValue] = useState(value || "");
 
   useEffect(() => {
@@ -40,18 +40,7 @@ const SmartInput = ({
         id={name}
         value={inputValue || ""}
         onChange={handleChange}
-        onBlur={(e) => {
-          validateInput(
-            e.target.name,
-            inputValue,
-            {
-              password: e.target.form.password
-                ? e.target.form.password.value
-                : "",
-            },
-            label
-          );
-        }}
+        onBlur={(e) => validateInput(e.target.name, e.target.value, label)}
         className="smart-input-field"
       />
       {errors[name] && <div className="smart-input-error">{errors[name]}</div>}

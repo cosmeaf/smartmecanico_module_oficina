@@ -1,77 +1,11 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
 import PropTypes from "prop-types";
+import SmartFormValidate from "./SmartFormValidate";
 
 const FormContext = createContext();
 
 const SmartForm = ({ children, onSubmit }) => {
-  const [errors, setErrors] = useState({});
-
-  const validateInput = (type, value, allValues, label) => {
-    if (!value || !value.trim()) {
-      setErrors((prev) => ({
-        ...prev,
-        [type]: `${label} não pode estar vazio.`,
-      }));
-      return;
-    }
-
-    switch (type) {
-      case "email":
-        if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value)) {
-          setErrors((prev) => ({ ...prev, [type]: "Invalid email." }));
-        } else {
-          setErrors((prev) => ({ ...prev, [type]: null }));
-        }
-        break;
-
-      case "password":
-        if (value.length < 8) {
-          setErrors((prev) => ({
-            ...prev,
-            [type]: "Password must be at least 8 characters.",
-          }));
-        } else {
-          setErrors((prev) => ({ ...prev, [type]: null }));
-        }
-        break;
-
-      case "passconf":
-        if (value !== allValues.password) {
-          setErrors((prev) => ({ ...prev, [type]: "Passwords do not match." }));
-        } else {
-          setErrors((prev) => ({ ...prev, [type]: null }));
-        }
-        break;
-
-      case "phone": {
-        const phoneRegex = /^\+55 \(\d{2}\) 9\d{4}-\d{4}$/;
-        if (!phoneRegex.test(value)) {
-          setErrors((prev) => ({
-            ...prev,
-            [type]: "Número de telefone inválido.",
-          }));
-        } else {
-          setErrors((prev) => ({ ...prev, [type]: null }));
-        }
-        break;
-      }
-
-      case "number":
-        if (isNaN(value)) {
-          setErrors((prev) => ({
-            ...prev,
-            [type]: "Por favor, insira um número válido.",
-          }));
-        } else {
-          setErrors((prev) => ({ ...prev, [type]: null }));
-        }
-        break;
-
-      default:
-        setErrors((prev) => ({ ...prev, [type]: null }));
-        break;
-    }
-  };
+  const { errors = {}, validateInput, validateOtp } = SmartFormValidate();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -85,20 +19,25 @@ const SmartForm = ({ children, onSubmit }) => {
 
     for (let child of React.Children.toArray(children)) {
       if (React.isValidElement(child) && child.props.name) {
-        validateInput(
-          child.props.name,
-          formValues[child.props.name],
-          formValues,
-          child.props.label // passing the label here
-        );
+        if (child.props.type === "otp") {
+          validateOtp(child.props.type, child.props.value, child.props.label);
+        } else {
+          validateInput(
+            child.props.name,
+            formValues[child.props.name],
+            child.props.label
+          );
+        }
       }
     }
 
-    onSubmit(e);
+    if (Object.values(errors).every((error) => !error)) {
+      onSubmit(e);
+    }
   };
 
   return (
-    <FormContext.Provider value={{ errors, validateInput }}>
+    <FormContext.Provider value={{ errors, validateInput, validateOtp }}>
       <form onSubmit={handleFormSubmit}>{children}</form>
     </FormContext.Provider>
   );

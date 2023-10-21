@@ -104,6 +104,71 @@ const api = {
     }
   },
 
+  // RECOVERY PASSWORD
+  recoveryPassword: async (email) => {
+    try {
+      const response = await fetch(`${BASE_URL}/password-recovery/`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({ email }),
+      });
+
+      const responseBody = await response.text();
+      const data = JSON.parse(responseBody);
+
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
+
+  // RECOVERY PASSWORD
+  otpValidation: async (otp) => {
+    try {
+      const response = await fetch(`${BASE_URL}/otp-validation/`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({ otp }),
+      });
+
+      const responseBody = await response.text();
+      const data = JSON.parse(responseBody);
+
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
+
+  // SIGN UP
+  changePassword: async (password, passconf, token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/password-reset/${token}/`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({ password, passconf }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
+
   // GET USER
   getUser: async () => {
     try {

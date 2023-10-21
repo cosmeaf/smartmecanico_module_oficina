@@ -31,6 +31,7 @@ module.exports = {
     "react/jsx-uses-vars": "error",
     "no-unused-vars": "off",
     "react/jsx-no-undef": "off",
+    "eslint-disable-next-line": "off",
   },
   settings: {
     react: {

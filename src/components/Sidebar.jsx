@@ -97,7 +97,6 @@ const Sidebar = () => {
             <li key={index}>
               <NavLink
                 to={link}
-                activeClassName="active"
                 className="text-gray-100 text-sm flex items-center gap-x-4 cursor-pointer p-2 rounded-md mt-2 transition-transform duration-300 hover:bg-gray-100 hover:text-gray-900"
               >
                 <span className={`text-2xl ${open ? "px-0" : "px-3"}`}>
@@ -126,7 +125,6 @@ const Sidebar = () => {
                     <li key={index}>
                       <NavLink
                         to={link}
-                        activeClassName="active"
                         className="text-gray-100 text-sm flex items-center gap-x-4 cursor-pointer p-2 rounded-md mt-2 transition-transform duration-300 hover:bg-gray-100 hover:text-gray-950"
                       >
                         {title}

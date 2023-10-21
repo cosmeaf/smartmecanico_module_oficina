@@ -1,41 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 import { ReactComponent as Logo } from "../../image/logo.svg";
 import { showMessage } from "../../components/Notification";
-import { SmartForm, SmartInput } from "../../components/forms";
+import { SmartForm, SmartOtpInput } from "../../components/forms";
+import api from "../../services/api";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const OtpVerify = () => {
+  const [otp, setOtp] = useState("");
+
   const [isFormComplete, setIsFormComplete] = useState(false);
 
-  const { signIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (email.trim().length > 0 && password.trim().length >= 8) {
+    if (otp.trim().length > 5) {
       setIsFormComplete(true);
     } else {
       setIsFormComplete(false);
     }
-  }, [email, password]);
+  }, [otp]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const status = await signIn(email, password);
-    if (status) {
-      navigate("/dashboard", { replace: true, state: { from: location } });
+    const data = await api.otpValidation(otp);
+    if (data.status) {
+      const token = data.data.token;
+      navigate(`/change-password/`, {
+        replace: true,
+        state: { from: location, token: token },
+      });
       showMessage({
         status: "success",
-        message: "Seja bem vindo",
+        message: `${data?.data.message}`,
       });
-    } else {
+    } else if (data.data.error) {
       showMessage({
         status: "error",
-        message: "Falha no login. Tente novamente.",
+        message: `${data.data.error}`,
+      });
+    } else {
+      console.log(data);
+      showMessage({
+        status: "error",
+        message: `${data.message}`,
       });
     }
   };
@@ -46,27 +55,19 @@ const Login = () => {
       <h1 className="text-2xl font-semibold mb-6">Bem Vindo de volta</h1>
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <SmartForm onSubmit={handleSubmit}>
-          <SmartInput
-            label="E-mail"
-            name="email"
-            placeholder="email"
-            type="email"
-            onChange={(e) => setEmail(e.target.value)}
+          <SmartOtpInput
+            label="Código Único de Verificaçao"
+            name="otp"
+            value={otp}
+            type="otp"
+            onChange={(value) => setOtp(value)}
           />
-          <SmartInput
-            label="Senha"
-            name="password"
-            placeholder="password"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
           {isFormComplete ? (
             <button
               type="submit"
               className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer"
             >
-              Entrar
+              Enviar
             </button>
           ) : (
             <button
@@ -83,13 +84,7 @@ const Login = () => {
             to="/recovery"
             className="text-green-500 hover:underline text-sm"
           >
-            Recuperar Senha
-          </Link>
-          <Link
-            to="/register"
-            className="text-green-500 hover:underline text-sm"
-          >
-            Registra-se
+            Nova Solicitaçao
           </Link>
         </div>
       </div>
@@ -97,4 +92,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default OtpVerify;
