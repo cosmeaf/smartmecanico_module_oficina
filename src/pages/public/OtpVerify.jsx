@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import packageJson from "../../../package.json";
 import { ReactComponent as Logo } from "../../image/logo.svg";
 import { showMessage } from "../../components/Notification";
 import { SmartForm, SmartOtpInput } from "../../components/forms";
@@ -87,6 +88,13 @@ const OtpVerify = () => {
             Nova Solicitaçao
           </Link>
         </div>
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center text-sm text-green-600">
+        <p>Smart Mecânico Modulo Oficina.</p>
+        <p>
+          Versão:
+          <span className="font-bold text-black">{packageJson.version}</span>
+        </p>
       </div>
     </div>
   );

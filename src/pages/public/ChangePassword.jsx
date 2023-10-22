@@ -95,11 +95,11 @@ const ChangePassword = () => {
           </Link>
         </div>
       </div>
-      <div className="flex flex-col justify-center items-center mt-10 text-sm text-green-600">
+      <div className="fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center text-sm text-green-600">
         <p>Smart Mecânico Modulo Oficina.</p>
         <p>
           Versão:
-          <span className="text-bold text-black">{packageJson.version}</span>
+          <span className="font-bold text-black">{packageJson.version}</span>
         </p>
       </div>
     </div>

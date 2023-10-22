@@ -7,6 +7,13 @@ pipeline {
                 script {
                     // Lendo o package.json
                     def packageJson = readJSON file: '/home/superuser/projects/smartmecanico_module_oficina/package.json'
+
+                    // Verificar se packageJson.version é válido
+                    if (!packageJson.version || !packageJson.version.contains('.')) {
+                        error("Versão inválida em package.json: ${packageJson.version}")
+                    }
+
+                    echo "Versão atual: ${packageJson.version}"
                     
                     // Obtendo e atualizando a versão
                     def parts = packageJson.version.split('\\.')
@@ -17,8 +24,6 @@ pipeline {
                     writeJSON file: '/home/superuser/projects/smartmecanico_module_oficina/package.json', json: packageJson
 
                     echo "Version atualizado para: ${newVersion}"
-                    echo "Log de atualização do versionamento:"
-                    echo packageJson
                 }
             }
         }
