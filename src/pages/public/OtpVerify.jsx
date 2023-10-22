@@ -53,7 +53,9 @@ const OtpVerify = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100">
       <Logo className="mx-auto w-32 mb-4 mt-10" />
-      <h1 className="text-2xl font-semibold mb-6">Bem Vindo de volta</h1>
+      <h1 className="text-2xl text-green-700 font-semibold mb-6">
+        Smart Mecânico
+      </h1>
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <SmartForm onSubmit={handleSubmit}>
           <SmartOtpInput
@@ -89,7 +91,7 @@ const OtpVerify = () => {
           </Link>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center text-sm text-green-600">
+      <div className="fixed bottom-0 left-0 right-0 mb-3 flex flex-col justify-center items-center text-sm text-green-600">
         <p>Smart Mecânico Modulo Oficina.</p>
         <p>
           Versão:

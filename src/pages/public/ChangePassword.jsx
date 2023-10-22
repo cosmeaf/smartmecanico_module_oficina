@@ -51,20 +51,22 @@ const ChangePassword = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100">
       <Logo className="mx-auto w-32 mb-4 mt-10" />
-      <h1 className="text-2xl font-semibold mb-6">Novo Usuário</h1>
+      <h1 className="text-2xl text-green-700 font-semibold mb-6">
+        Smart Mecânico
+      </h1>
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <SmartForm onSubmit={handleSubmit}>
           <SmartInput
-            label="Senha"
+            label="Nova Senha"
             name="password"
-            placeholder="Senha"
+            placeholder="Digite nova Senha"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
           <SmartInput
-            label="Confirmar Senha"
+            label="Confirmar Nova Senha"
             name="passconf"
-            placeholder="Confirmar Senha"
+            placeholder="Confirmar nova Senha"
             type="password"
             onChange={(e) => setPassconf(e.target.value)}
           />
@@ -95,11 +97,11 @@ const ChangePassword = () => {
           </Link>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center text-sm text-green-600">
+      <div className="fixed bottom-0 left-0 right-0 mb-3 flex flex-col justify-center items-center text-sm text-green-600">
         <p>Smart Mecânico Modulo Oficina.</p>
         <p>
           Versão:
-          <span className="font-bold text-black">{packageJson.version}</span>
+          <span className="font-bold text-black"> {packageJson.version}</span>
         </p>
       </div>
     </div>
