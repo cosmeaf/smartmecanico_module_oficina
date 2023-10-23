@@ -357,7 +357,24 @@ const api = {
       return { success: false, message: error.message };
     }
   },
+  // ADDRESS GET
+  getAddress: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/addresses/`, {
+        method: "GET",
+        headers: getHeaders(),
+      });
 
+      const data = await response.json();
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
   // VEHICLE POST
   vehiclePost: async (brand, model, fuel, year, odometer, plate, user) => {
     try {

@@ -1,171 +1,146 @@
+/* SmartForm.css convertido para TailwindCSS */
+
 .smartButton {
-  display: flex;
-  align-items: center;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.25rem;
-  font-weight: 500;
-  gap: 1px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  @apply flex items-center py-1 px-2 rounded font-medium space-x-1 cursor-pointer transition-all duration-200 ease-in-out;
 }
 
 .iconSpacing {
-  margin-right: 0.5rem;
+  @apply mr-2;
 }
 
 .smartButton:hover {
-  filter: brightness(90%);
+  @apply filter brightness-90;
 }
 
 .smartButton:active {
-  filter: brightness(85%);
-  transform: scale(0.98);
+  @apply filter brightness-85 scale-95; /* Alterado scale-98 para scale-95 */
 }
 
+/* Usando a shadow-outline que deve ser adicionada no seu tailwind.config.js */
 .smartButton:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  @apply outline-none shadow-outlineGray;
 }
 
 /* Primary button */
 
 .btnPrimary {
-  background-color: #70d44b;
-  color: white;
-  border-color: #5fb738;
+  @apply bg-primary text-white border-primary;
 }
 
 .btnPrimary:hover {
-  background-color: #5fb738;
-  border-color: #4e9930;
+  @apply bg-green-600 border-green-600;
 }
 
 .btnPrimary:active {
-  background-color: #4e9930;
-  border-color: #3d7a28;
+  @apply bg-green-700 border-green-700;
 }
 
+/* Usando a shadow-outline-green que deve ser adicionada no seu tailwind.config.js */
 .btnPrimary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(112, 212, 75, 0.5);
+  @apply outline-none shadow-outlineGreen;
 }
 
-/* Secondary button (cinza) */
+/* Secondary button (gray) */
 
 .btnSecondary {
-  background-color: #575756;
-  color: white;
-  border-color: #4a4a49;
+  @apply bg-secondary text-white border-secondary;
 }
 
 .btnSecondary:hover {
-  background-color: #4a4a49;
-  border-color: #3e3e3d;
+  @apply bg-gray-700 border-gray-700;
 }
 
 .btnSecondary:active {
-  background-color: #3e3e3d;
-  border-color: #333332;
+  @apply bg-gray-800 border-gray-800;
 }
 
+/* Usando a shadow-outline-gray que deve ser adicionada no seu tailwind.config.js */
 .btnSecondary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(87, 87, 86, 0.5);
+  @apply outline-none shadow-outlineSecodary;
 }
 
+/* Info button */
 
 .btnInfo {
-  background-color: #3490dc;
-  color: white;
-  border-color: #2779bd;
+  @apply bg-blue-600 text-white border-blue-600;
 }
 
 .btnInfo:hover {
-  background-color: #2779bd;
-  border-color: #1c6db1;
+  @apply bg-blue-700 border-blue-700;
 }
 
 .btnInfo:active {
-  background-color: #1c6db1;
-  border-color: #115fa3;
+  @apply bg-blue-800 border-blue-800;
 }
 
+/* Usando a shadow-outline-blue que deve ser adicionada no seu tailwind.config.js */
 .btnInfo:focus {
-  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.5);
+  @apply shadow-none shadow-outlineBlue;
 }
 
+/* Warning button */
 
 .btnWarning {
-  background-color: #ffed4a;
-  color: black;
-  border-color: #fcd92e;
+  @apply bg-yellow-300 text-black border-yellow-400;
 }
 
 .btnWarning:hover {
-  background-color: #fcd92e;
-  border-color: #fabd0d;
+  @apply bg-yellow-400 border-yellow-500;
 }
 
 .btnWarning:active {
-  background-color: #fabd0d;
-  border-color: #f7b500;
+  @apply bg-yellow-500 border-yellow-600;
 }
 
+/* Usando a shadow-outline-yellow que deve ser adicionada no seu tailwind.config.js */
 .btnWarning:focus {
-  box-shadow: 0 0 0 0.2rem rgba(255, 237, 74, 0.5);
+  @apply shadow-none shadow-outlineYellow;
 }
 
+/* Danger button */
 
 .btnDanger {
-  background-color: #e3342f;
-  color: white;
-  border-color: #d0211c;
+  @apply bg-red-600 text-white border-red-600;
 }
 
 .btnDanger:hover {
-  background-color: #d0211c;
-  border-color: #b81812;
+  @apply bg-red-700 border-red-700;
 }
 
 .btnDanger:active {
-  background-color: #b81812;
-  border-color: #a1110d;
+  @apply bg-red-800 border-red-800;
 }
 
+/* Usando a shadow-outline-red que deve ser adicionada no seu tailwind.config.js */
 .btnDanger:focus {
-  box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.5);
+  @apply shadow-none shadow-outlineRed;
 }
 
-/* Alert button (laranja) */
+/* Alert button (orange) */
 
 .btnAlert {
-  background-color: #f6993f;
-  color: white;
-  border-color: #f5821f;
+  @apply bg-orange-500 text-white border-orange-500;
 }
 
 .btnAlert:hover {
-  background-color: #f5821f;
-  border-color: #f36c00;
+  @apply bg-orange-600 border-orange-600;
 }
 
 .btnAlert:active {
-  background-color: #f36c00;
-  border-color: #e65a00;
+  @apply bg-orange-700 border-orange-700;
 }
 
+/* Usando a shadow-outline-orange que deve ser adicionada no seu tailwind.config.js */
 .btnAlert:focus {
-  box-shadow: 0 0 0 0.2rem rgba(246, 153, 63, 0.5);
+  @apply shadow-none shadow-outlineOrange;
 }
 
+/* Button sizes */
 
 .btnSmall {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  border-radius: 0.2rem;
+  @apply py-1 px-2 text-sm rounded-md;
 }
 
 .btnLarge {
-  padding: 0.75rem 1.5rem;
-  font-size: 1.25rem;
-  border-radius: 0.3rem;
+  @apply py-3 px-6 text-lg rounded-lg;
 }
-

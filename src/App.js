@@ -19,6 +19,9 @@ import UserUpdate from "./pages/protected/UserUpdate";
 import UserDetails from "./pages/protected/UserDetails";
 import OtpVerify from "./pages/public/OtpVerify";
 import ChangePassword from "./pages/public/ChangePassword";
+import AddressAdd from "./pages/protected/AddressAdd";
+import AddressDetails from "./pages/protected/AddressDetails";
+import AddressUpdate from "./pages/protected/AddressUpdate";
 
 const App = () => {
   const { loading, isAuthenticated } = useAuth();
@@ -81,6 +84,18 @@ const App = () => {
           <Route
             path="address"
             element={isAuthenticated ? <Address /> : <Login />}
+          />
+          <Route
+            path="address-register"
+            element={isAuthenticated ? <AddressAdd /> : <Login />}
+          />
+          <Route
+            path="address/:id"
+            element={isAuthenticated ? <AddressDetails /> : <Login />}
+          />
+          <Route
+            path="address/:id"
+            element={isAuthenticated ? <AddressUpdate /> : <Login />}
           />
           <Route
             path="vehicle"
