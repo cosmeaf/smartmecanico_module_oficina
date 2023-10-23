@@ -32,10 +32,13 @@ pipeline {
             steps {
                 script {
                     // Executando o script de deploy
-                    def retorno = sh(script: 'sudo /home/superuser/scripts/reactjs_deploy_v001.sh', returnStatus: true)
+                    def retorno = sh(script: 'sudo sh -x /home/superuser/scripts/reactjs_deploy_v001.sh', returnStatus: true)
                     if (retorno != 0) {
                         error("Erro ao executar o script de deploy.")
                     }
+                    
+                    // Reiniciando o serviço smartmecanico-serve.service
+                    sh 'sudo systemctl restart smartmecanico-serve.service'
                 }
             }
         }
