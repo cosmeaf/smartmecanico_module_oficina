@@ -11,8 +11,8 @@ const SmartInput = ({
   value = "",
   onChange = () => {},
   readonly = false,
-  style, // Adicione esta linha
-  className = "", // Adicione esta linha, com um valor padrão
+  style,
+  className = "",
   ...otherProps
 }) => {
   const { errors = {}, validateInput } = useForm();

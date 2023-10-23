@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
-import {
-  BsFillSave2Fill,
-  BsPersonAdd,
-  BsSave2Fill,
-  BsSkipBackwardFill,
-} from "react-icons/bs";
+import { BsPersonAdd, BsSave2Fill, BsSkipBackwardFill } from "react-icons/bs";
 import SmartButton from "../../components/buttons/SmartButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SmartForm, SmartInput } from "../../components/forms";
@@ -49,13 +44,22 @@ const AddressAdd = () => {
     e.preventDefault();
 
     const form = e.target;
-    const user = selectedUser.label;
+    const user = selectedUser && selectedUser.label ? selectedUser.label : null;
     const cep = form.cep.value;
     const logradouro = form.logradouro.value;
     const complemento = form.complemento.value;
     const bairro = form.bairro.value;
     const localidade = form.localidade.value;
     const uf = form.uf.value;
+
+    if (!user || !cep || !logradouro || !bairro || !localidade || !uf) {
+      showMessage({
+        status: "warning",
+        message: "Por favor, preencha todos os campos obrigatórios.",
+      });
+      return;
+    }
+
     try {
       const response = await api.addressPost(
         user,
@@ -113,7 +117,7 @@ const AddressAdd = () => {
               <Select
                 ref={userRef}
                 placeholder="Selecione Cliente..."
-                value={selectedUser}
+                value={selectedUser || {}}
                 onChange={(option) => setSelectedUser(option)}
                 options={userOptions}
                 isSearchable={true}

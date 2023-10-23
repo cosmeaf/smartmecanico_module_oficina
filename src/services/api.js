@@ -470,16 +470,11 @@ const api = {
       });
 
       const data = await response.json();
+      console.log();
       if (response.ok) {
         return { status: true, data };
       } else {
-        if (
-          data.error &&
-          data.error === "Given token not valid for any token type"
-        ) {
-          localStorage.removeItem("access_token");
-        }
-        throw new Error(data.error);
+        return { status: false, data };
       }
     } catch (error) {
       return { success: false, message: error.message };

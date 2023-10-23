@@ -12,6 +12,13 @@ const SmartButton = ({
 }) => {
   const buttonClass = `smartButton ${variant}`;
 
+  if (!title) {
+    console.warn(
+      "SmartButton foi chamado sem um título. Por favor, forneça um título."
+    );
+    return null;
+  }
+
   return (
     <button
       type={type}

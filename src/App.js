@@ -102,7 +102,7 @@ const App = () => {
             element={isAuthenticated ? <Vehicle /> : <Login />}
           />
           <Route
-            path="vehicle-add"
+            path="vehicle-register"
             element={isAuthenticated ? <VehicleAdd /> : <Login />}
           />
           <Route

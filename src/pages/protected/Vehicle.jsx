@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrashAlt, FaEye } from "react-icons/fa";
-import { BsPersonAdd, BsSkipBackwardFill } from "react-icons/bs";
+import { BsCarFront, BsPersonAdd, BsSkipBackwardFill } from "react-icons/bs";
 import { DataColumn, DataColumns, DataTable } from "../../components/dataTable";
 import SmartButton from "../../components/buttons/SmartButton";
 import api from "../../services/api";
@@ -62,9 +62,9 @@ function Vehicle() {
           />
           <SmartButton
             variant="btnInfo"
-            icon={BsPersonAdd}
+            icon={BsCarFront}
             title="Novo"
-            onClick={() => navigate("/dashboard/user-register")}
+            onClick={() => navigate("/dashboard/vehicle-register")}
           />
         </div>
       </div>
