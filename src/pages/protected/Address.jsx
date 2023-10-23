@@ -16,10 +16,8 @@ function Address() {
       const response = await api.getAddress();
       if (response && response.status) {
         response.data && setAddress(response.data);
-        console.log(address);
       }
     }
-
     fetchData();
   }, []);
 
@@ -37,7 +35,7 @@ function Address() {
       icon: <FaEdit size={15} />,
       type: "Edit",
       onClick: (id) => {
-        navigate(`/dashboard/address/${id}`);
+        navigate(`/dashboard/address-update/${id}`);
       },
     },
   ];

@@ -10,6 +10,10 @@ const SmartInput = ({
   type = "text",
   value = "",
   onChange = () => {},
+  readonly = false,
+  style, // Adicione esta linha
+  className = "", // Adicione esta linha, com um valor padrão
+  ...otherProps
 }) => {
   const { errors = {}, validateInput } = useForm();
   const [inputValue, setInputValue] = useState(value || "");
@@ -41,7 +45,9 @@ const SmartInput = ({
         value={inputValue || ""}
         onChange={handleChange}
         onBlur={(e) => validateInput(e.target.name, e.target.value, label)}
-        className="smart-input-field"
+        readOnly={readonly}
+        style={style}
+        className={`smart-input-field ${className}`}
       />
       {errors[name] && <div className="smart-input-error">{errors[name]}</div>}
     </div>
@@ -56,6 +62,9 @@ SmartInput.propTypes = {
   value: PropTypes.string,
   error: PropTypes.string,
   onChange: PropTypes.func,
+  readonly: PropTypes.bool,
+  style: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default SmartInput;

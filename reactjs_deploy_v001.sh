@@ -13,24 +13,23 @@ execute_as_superuser() {
 }
 
 # Verificando se o serviço está parado
-sudo systemctl status smartmecanico-serve.service | grep -q "Active: active (running)"
-if [ $? -eq 0 ]; then
+if execute_as_superuser "sudo systemctl status smartmecanico-serve.service | grep -q 'Active: active (running)'"; then
     echo "Parando Aplicaçao..."
-    sudo systemctl status smartmecanico-serve.service
+    execute_as_superuser "sudo systemctl stop smartmecanico-serve.service"
 else
-    echo "Error: Falha em parar serviço smartmecanico-serve.service "
-    exit 1
+    echo "Aplicação já está parada."
 fi
 
+
 # Removendo backups antigos
-BACKUPS=$(execute_as_superuser 'find /home/superuser/projects -name "smartmecanico_module_oficina.*.bkp" | sort -r | tail -n 2')
+BACKUPS=$(execute_as_superuser 'sudo find /home/superuser/projects -name "smartmecanico_module_oficina.*.bkp" | sort -r | tail -n 2')
 
 for BACKUP in $BACKUPS; do
-    execute_as_superuser "rm -rf $BACKUP"
+    execute_as_superuser "sudo rm -rf $BACKUP"
 done
 
 # Fazendo backup do diretório do projeto
-execute_as_superuser "cp -rp $PROJECT_DIR /home/superuser/projects/$BACKUP_NAME"
+execute_as_superuser "sudo cp -rp $PROJECT_DIR /home/superuser/projects/$BACKUP_NAME"
 if [ $? -eq 0 ]; then
     echo "Backup Realizado com Sucesso"
 else
@@ -38,7 +37,7 @@ else
 fi
 
 # Removendo Projeto
-execute_as_superuser "rm -rf $PROJECT_DIR"
+execute_as_superuser "sudo rm -rf $PROJECT_DIR"
 if [ $? -eq 0 ]; then
     echo "Success: Projeto excluido com sucesso" 
 else

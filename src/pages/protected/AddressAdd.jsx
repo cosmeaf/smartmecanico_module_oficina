@@ -66,7 +66,6 @@ const AddressAdd = () => {
         localidade,
         uf
       );
-      console.log(response);
       if (response.status) {
         navigate("/dashboard/address", {
           replace: true,

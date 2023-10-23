@@ -94,7 +94,7 @@ const App = () => {
             element={isAuthenticated ? <AddressDetails /> : <Login />}
           />
           <Route
-            path="address/:id"
+            path="address-update/:id"
             element={isAuthenticated ? <AddressUpdate /> : <Login />}
           />
           <Route

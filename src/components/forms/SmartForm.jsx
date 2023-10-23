@@ -4,7 +4,7 @@ import SmartFormValidate from "./SmartFormValidate";
 
 const FormContext = createContext();
 
-const SmartForm = ({ children, onSubmit }) => {
+const SmartForm = ({ children, onSubmit, className }) => {
   const { errors = {}, validateInput, validateOtp } = SmartFormValidate();
 
   const handleFormSubmit = (e) => {
@@ -38,7 +38,9 @@ const SmartForm = ({ children, onSubmit }) => {
 
   return (
     <FormContext.Provider value={{ errors, validateInput, validateOtp }}>
-      <form onSubmit={handleFormSubmit}>{children}</form>
+      <form className={className} onSubmit={handleFormSubmit}>
+        {children}
+      </form>
     </FormContext.Provider>
   );
 };
@@ -46,6 +48,7 @@ const SmartForm = ({ children, onSubmit }) => {
 SmartForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 
 export const useForm = () => {

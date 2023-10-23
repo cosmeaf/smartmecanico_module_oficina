@@ -394,7 +394,64 @@ const api = {
       return { status: false, message: error.message };
     }
   },
+  // ADDRESS GET BY ID
+  getAddressById: async (id) => {
+    try {
+      const response = await smartFetch(`${BASE_URL}/addresses/${id}`, {
+        method: "GET",
+        headers: getHeaders(),
+      });
 
+      const data = await response.json();
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
+  // ADDRESS PATCH
+  addressPatch: async (
+    id,
+    cep,
+    logradouro,
+    complemento,
+    bairro,
+    localidade,
+    uf
+  ) => {
+    try {
+      const response = await fetch(`${BASE_URL}/addresses/${id}/`, {
+        method: "PATCH",
+        headers: getHeaders(),
+        body: JSON.stringify({
+          cep,
+          logradouro,
+          complemento,
+          bairro,
+          localidade,
+          uf,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        if (
+          data.error &&
+          data.error === "Given token not valid for any token type"
+        ) {
+          localStorage.removeItem("access_token");
+        }
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  },
   // VEHICLE POST
   vehiclePost: async (brand, model, fuel, year, odometer, plate, user) => {
     try {
