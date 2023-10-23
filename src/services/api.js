@@ -1,3 +1,4 @@
+import { useAuth } from "../context/AuthContext";
 import BASE_URL from "./baseUrl";
 
 const getHeaders = () => {
@@ -12,6 +13,24 @@ const getHeaders = () => {
   }
 
   return headers;
+};
+
+const smartFetch = async (url, options = {}) => {
+  options.headers = {
+    ...options.headers,
+    ...getHeaders(),
+  };
+
+  const response = await fetch(url, options);
+
+  if (response.status === 401) {
+    const { signOut } = useAuth();
+    signOut();
+    window.location.href = "/login";
+    throw new Error("Unauthorized");
+  }
+
+  return response;
 };
 
 const api = {
@@ -360,7 +379,7 @@ const api = {
   // ADDRESS GET
   getAddress: async () => {
     try {
-      const response = await fetch(`${BASE_URL}/addresses/`, {
+      const response = await smartFetch(`${BASE_URL}/addresses/`, {
         method: "GET",
         headers: getHeaders(),
       });
@@ -375,6 +394,7 @@ const api = {
       return { status: false, message: error.message };
     }
   },
+
   // VEHICLE POST
   vehiclePost: async (brand, model, fuel, year, odometer, plate, user) => {
     try {
