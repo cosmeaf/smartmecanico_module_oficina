@@ -29,6 +29,7 @@ const VehicleAdd = () => {
 
   const [years, setYears] = useState([]);
   const [selectedYear, setSelectedYear] = useState("");
+  const [yearId, setYearId] = useState("");
   const [yearName, setYearName] = useState("");
   const [fuelName, setFuelName] = useState("");
 
@@ -133,6 +134,12 @@ const VehicleAdd = () => {
     } catch (error) {
       console.error("Erro ao buscar marcas:", error);
     }
+  };
+
+  const getPrice = async (type, brandId, modelId, yearId) => {
+    const brandID = brandId.value;
+    const modelID = modelId.value;
+    const yearID = yearId.value;
   };
 
   const handleSubmit = async (e) => {
@@ -268,7 +275,7 @@ const VehicleAdd = () => {
               value={selectedYear}
               onChange={(yearOption) => {
                 setSelectedYear(yearOption);
-
+                setYearId(yearOption);
                 const [year, fuel] = yearOption.label.split(" ");
                 setYearName(year);
                 setFuelName(fuel);

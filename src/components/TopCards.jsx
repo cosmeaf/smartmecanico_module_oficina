@@ -7,7 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 const TopCards = () => {
   const cardList = [
     {
-      name: "Total Customers",
+      name: "Clientes Registrados",
       link: "/dashboard",
       icon: AiOutlineUser,
       value: "1,589",
@@ -15,7 +15,7 @@ const TopCards = () => {
       color: "green",
     },
     {
-      name: "Appointments Week",
+      name: "Agendamentos da Semana",
       link: "/dashboard",
       icon: BsBuildingGear,
       value: "34",
@@ -23,7 +23,7 @@ const TopCards = () => {
       color: "green",
     },
     {
-      name: "Vehicle Maintenance",
+      name: "Menutenções Programadas",
       link: "/dashboard",
       icon: IoCarSportOutline,
       value: "820",
@@ -31,7 +31,7 @@ const TopCards = () => {
       color: "green",
     },
     {
-      name: "Services Month",
+      name: "Revisão / Serviços",
       link: "/dashboard",
       icon: VscTools,
       value: "3,420",
