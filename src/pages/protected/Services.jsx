@@ -13,7 +13,7 @@ const Services = () => {
   useEffect(() => {
     const getServices = async () => {
       try {
-        const response = await api.servieGet();
+        const response = await api.serviceGet();
         setServices(response.data);
       } catch (error) {
         console.error("Erro ao buscar serviços:", error);

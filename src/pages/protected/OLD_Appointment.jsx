@@ -1,35 +1,46 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import { AiFillSave } from "react-icons/ai";
-import SmartForm from "../../components/forms/SmartForm";
-import CustomCalendar from "../../components/calendar/CustomCalendar";
-import SmartButton from "../../components/buttons/SmartButton";
-import CustomSelectHour from "../../components/calendar/CustomSelectHour";
-import { showMessage } from "../../components/Notification";
-import api from "../../services/api";
 import { BsPersonAdd, BsSkipBackwardFill } from "react-icons/bs";
+import { AiFillSave } from "react-icons/ai";
+import { useLocation, useNavigate } from "react-router-dom";
+import SmartButton from "../../components/buttons/SmartButton";
+import api from "../../services/api";
+import SmartForm from "../../components/forms/SmartForm";
+import { showMessage } from "../../components/Notification";
+import CustomCalendar from "../../components/calendar/CustomCalendar";
 
 const Appointment = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // Select Service Data
-  const [services, setServices] = useState([]);
-  const [selectService, setSelectService] = useState(null);
-  // Select User Data
+
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  // Select Address Data
-  const [addresses, setAddresses] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState(null);
-  // Select Vehicle Data
+
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
 
-  const [date, setDate] = useState(new Date());
-  const [formattedDate, setFormattedDate] = useState("");
-  const [selectedHour, setSelectedHour] = useState(null);
-  const [appointmentData, setAppointmentData] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
+  const [services, setServices] = useState([]);
+  const [selectService, setSelectService] = useState(null);
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: state.isFocused ? "blue" : provided.borderColor,
+      boxShadow: state.isFocused ? "0 0 0 1px blue" : null,
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? "lightgray"
+        : provided.backgroundColor,
+    }),
+  };
 
   useEffect(() => {
     const getServices = async () => {
@@ -63,14 +74,6 @@ const Appointment = () => {
       }
     };
     fetchUsers();
-    setUsers(null);
-    setAddresses(null);
-    setVehicles(null);
-    setSelectedUser(null);
-    setSelectedAddress(null);
-    setSelectedVehicle(null);
-    setFormattedDate(null);
-    setSelectedHour(null);
   }, [selectService]);
 
   useEffect(() => {
@@ -109,33 +112,6 @@ const Appointment = () => {
     fetchVehicle();
   }, [selectedUser]);
 
-  useEffect(() => {
-    const getAppointmet = async () => {
-      try {
-        const response = await api.appointmentGet();
-        if (response.status) {
-          setAppointmentData(response.data);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar Agendamentos:", error);
-      }
-    };
-    getAppointmet();
-  }, []);
-
-  const formatDate = () => {
-    setFormattedDate(date.toISOString().slice(0, 10));
-  };
-
-  const handleUserChange = (userOption) => {
-    setSelectedUser(userOption);
-    setSelectedAddress(null);
-    setSelectedVehicle(null);
-    // setDate(null);
-    // setFormattedDate(null);
-    setSelectedHour(null);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -149,8 +125,8 @@ const Appointment = () => {
       !vehicle ||
       !addressVal ||
       !service ||
-      !formattedDate ||
-      !selectedHour
+      !selectedDate ||
+      !selectedTime
     ) {
       showMessage({
         status: "warning",
@@ -165,10 +141,11 @@ const Appointment = () => {
         addressVal,
         service,
         vehicle,
-        selectedHour,
-        formattedDate
+        selectedTime,
+        selectedDate
       );
-      if (response.status) {
+      console.log(response);
+      if (response && response.status === 200) {
         navigate("/dashboard/appointment", {
           replace: true,
           state: { from: location },
@@ -177,11 +154,10 @@ const Appointment = () => {
           status: "success",
           message: "Serviço Agendado Sucesso",
         });
-        handleUserChange();
       } else {
         showMessage({
           status: "error",
-          message: "Ops! Error ao Realizar Agendamento",
+          message: `${response.data}`,
         });
       }
     } catch (error) {
@@ -192,7 +168,7 @@ const Appointment = () => {
   return (
     <div className="p-4">
       <div className="flex justify-between mb-3">
-        <h1 className="text-2xl font-bold">Agendar Serviço</h1>
+        <h1 className="text-2xl font-bold">Lista de Clientes</h1>
         <div className="flex gap-2">
           <SmartButton
             variant="btnInfo"
@@ -208,8 +184,9 @@ const Appointment = () => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white border rounded-md shadow-lg p-8">
-        <div className="p-4 shadow-md rounded-md border">
+      <div className="shadow-lg sm:rounded-lg bg-white p-8">
+        {/* COLUNA ESQUERDA */}
+        <div className="pl-4 border bg-gray-50 p-4 rounded-md">
           <SmartForm onSubmit={handleSubmit}>
             <Select
               placeholder="Selecione Serviço..."
@@ -218,33 +195,19 @@ const Appointment = () => {
               options={services}
               isSearchable={true}
               className={"mb-4"}
+              styles={customStyles}
+            />
+            <Select
+              placeholder="Selecione Cliente..."
+              value={selectedUser}
+              onChange={(userOption) => setSelectedUser(userOption)}
+              options={users}
+              isSearchable={true}
+              className={"mb-4"}
+              styles={customStyles}
             />
 
-            {selectService && (
-              <Select
-                placeholder="Selecione Cliente..."
-                value={selectedUser}
-                onChange={(userOption) => {
-                  handleUserChange(userOption);
-                }}
-                options={users}
-                isSearchable={true}
-                className={"mb-4"}
-              />
-            )}
-
-            {selectedUser && (
-              <Select
-                placeholder="Selecione CEP do Endereço"
-                value={selectedAddress}
-                onChange={(addressOption) => setSelectedAddress(addressOption)}
-                options={addresses}
-                isSearchable={true}
-                className={"mb-4"}
-              />
-            )}
-
-            {selectedAddress && (
+            {vehicles.length > 0 && (
               <Select
                 placeholder="Selecione Placa do Veículo..."
                 value={selectedVehicle}
@@ -252,64 +215,32 @@ const Appointment = () => {
                 options={vehicles}
                 isSearchable={true}
                 className={"mb-4"}
-              />
-            )}
-            {selectedVehicle && (
-              <CustomCalendar
-                value={date}
-                onChange={(newDate) => setDate(newDate)}
-                beforeDate={true}
-                dayBlocks={["sunday"]}
-                onClickDay={formatDate}
-              />
-            )}
-            {formattedDate && (
-              <CustomSelectHour
-                selectedDate={formattedDate}
-                onHourSelect={setSelectedHour}
+                styles={customStyles}
               />
             )}
 
-            <div className="mt-5">
-              <SmartButton
-                type="submit"
-                className={`flex justify-center items-center btnPrimary rounded-md px-4`}
-                title="Confirmar Agendamento"
-                icon={AiFillSave}
-                width="100%"
-                height="40px"
+            {addresses.length > 0 && (
+              <Select
+                placeholder="Selecione CEP do Endereço"
+                value={selectedAddress}
+                onChange={(addressOption) => setSelectedAddress(addressOption)}
+                options={addresses}
+                isSearchable={true}
+                className={"mb-4"}
+                styles={customStyles}
               />
-            </div>
+            )}
+            {/* RENDERIZAR CALENDARIO AGENDAMENTO */}
+
+            <SmartButton
+              type="submit"
+              variant="btnPrimary"
+              title="Agendar Serviço"
+              icon={AiFillSave}
+              width="180px"
+              height="40px"
+            />
           </SmartForm>
-        </div>
-        <div className="p-4 shadow-md rounded-md border">
-          <h1 className="text-xl font-semibold mb-4">Lista de Agendamentos</h1>
-          <div className="max-h-64 overflow-y-auto">
-            {appointmentData.map((appointment, index) => (
-              <div
-                key={index}
-                className="my-2 p-3 border rounded shadow-lg hover:bg-gray-100 cursor-pointer"
-                onClick={() => {}}
-              >
-                <p className="flex justify-between text-md px-4">
-                  <div>
-                    <strong className="mr-1">Serviço:</strong>
-                    {appointment.service}
-                  </div>
-                  <div>
-                    <strong>Data:</strong> {appointment.day}
-                  </div>
-                  <div>
-                    <strong className="mr-1">Hora:</strong> {appointment.hour}
-                  </div>
-                </p>
-
-                <p className="text-md px-4">
-                  <strong>Protocolo:</strong> {appointment.protocol}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

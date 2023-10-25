@@ -500,9 +500,27 @@ const api = {
   },
 
   // GET SERVICES
-  servieGet: async () => {
+  serviceGet: async () => {
     try {
       const response = await fetch(`${BASE_URL}/service/`, {
+        method: "GET",
+        headers: getHeaders(),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  },
+  // GET HOUR SERVICE
+  hourServcieGet: async () => {
+    try {
+      const response = await smartFetch(`${BASE_URL}/hourservice/`, {
         method: "GET",
         headers: getHeaders(),
       });
@@ -521,11 +539,10 @@ const api = {
   // GET APPOINTMENT
   appointmentGet: async () => {
     try {
-      const response = await fetch(`${BASE_URL}/appointment/`, {
+      const response = await smartFetch(`${BASE_URL}/appointment/`, {
         method: "GET",
         headers: getHeaders(),
       });
-
       const data = await response.json();
       if (response.ok) {
         return { status: true, data };
@@ -534,6 +551,34 @@ const api = {
       }
     } catch (error) {
       return { status: false, message: error.message };
+    }
+  },
+
+  // POST APPOINTMENT
+  appointmentPost: async (user, address, service, vehicle, hour, day) => {
+    try {
+      const response = await smartFetch(`${BASE_URL}/appointment/`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({
+          user,
+          address,
+          service,
+          vehicle,
+          hour,
+          day,
+        }),
+      });
+
+      const data = await response.json();
+      console.log("API ", data);
+      if (response.ok) {
+        return { status: true, data };
+      } else {
+        return { status: false, data };
+      }
+    } catch (error) {
+      return { success: false, message: error.message };
     }
   },
 };

@@ -7,7 +7,9 @@ const SmartButton = ({
   icon: IconComponent,
   title,
   onClick,
-  type = "button", // valor padrão
+  type = "button",
+  width,
+  height,
   ...otherProps
 }) => {
   const buttonClass = `smartButton ${variant}`;
@@ -24,9 +26,10 @@ const SmartButton = ({
       type={type}
       className={buttonClass}
       onClick={onClick}
+      style={{ width: width, height: height }}
       {...otherProps}
     >
-      {IconComponent && <IconComponent className="iconSpacing" size={20} />}
+      {IconComponent && <IconComponent className="iconSpacing " size={20} />}
       {title}
     </button>
   );
@@ -45,6 +48,8 @@ SmartButton.propTypes = {
   icon: PropTypes.func,
   onClick: PropTypes.func,
   type: PropTypes.oneOf(["button", "reset", "submit"]),
+  width: PropTypes.any,
+  height: PropTypes.string,
 };
 
 SmartButton.defaultProps = {
