@@ -1,6 +1,6 @@
 {
   "name": "smart_mecanico",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "dependencies": {
     "@faker-js/faker": "^8.2.0",

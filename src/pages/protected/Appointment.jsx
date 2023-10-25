@@ -282,9 +282,11 @@ const Appointment = () => {
             </div>
           </SmartForm>
         </div>
-        <div className="p-4 shadow-md rounded-md border">
-          <h1 className="text-xl font-semibold mb-4">Lista de Agendamentos</h1>
-          <div className="max-h-64 overflow-y-auto">
+        <div className="flex flex-col h-screen">
+          <div className="p-4 shadow-md rounded-md border flex-shrink-0">
+            <h1>Lista de Agendamentos</h1>
+          </div>
+          <div className="flex-grow overflow-y-auto">
             {appointmentData.map((appointment, index) => (
               <div
                 key={index}

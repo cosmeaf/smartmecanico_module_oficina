@@ -55,7 +55,7 @@ const CustomSelectHour = ({ selectedDate, onHourSelect }) => {
 
   return (
     <div className="mb-4 mt-4 ">
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 lg:grid-cols-6">
         {hoursAvailable.map((hour, index) => (
           <button
             key={index}
